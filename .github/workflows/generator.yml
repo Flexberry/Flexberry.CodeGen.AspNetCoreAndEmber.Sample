@@ -26,6 +26,12 @@ jobs:
       - name: Install NewPlatform.Flexberry.Designer.CommandLine
         run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha03 -OutputDirectory gen
 
+      - name: Starting X virtual framebuffer (Xvfb) in background
+        run: |
+          Xvfb -ac :99 -screen 0 1280x1024x16 &
+          export DISPLAY=:99
+          export SSH_ASKPASS=1
+
       - name: Code generation
         run: mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha03/tools/flexberry.exe ./GenConfig.fdg
 
