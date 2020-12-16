@@ -5,9 +5,9 @@ name: CodeGen
 on:
   # Triggers the workflow on push or pull request events but only for the develop branch
   push:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,6 +27,6 @@ jobs:
         run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha02 -OutputDirectory gen
 
       - name: Code generation
-        run: mono ./gen/NewPlatform.Flexberry.Designer.CommandLine/tools/flexberry.exe ./GenConfig.fdg --verbose
+        run: mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha02/tools/flexberry.exe ./GenConfig.fdg --verbose
 
         
