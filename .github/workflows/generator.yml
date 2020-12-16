@@ -24,9 +24,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install NewPlatform.Flexberry.Designer.CommandLine
-        run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha02 -OutputDirectory gen
+        run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha03 -OutputDirectory gen
 
       - name: Code generation
-        run: mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha02/tools/flexberry.exe ./GenConfig.fdg
+        run: mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha03/tools/flexberry.exe ./GenConfig.fdg
 
         
