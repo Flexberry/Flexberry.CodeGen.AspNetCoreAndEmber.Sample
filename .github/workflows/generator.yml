@@ -47,6 +47,9 @@ jobs:
           export SSH_ASKPASS=1
           mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha04/tools/flexberry.exe ./GenConfig.fdg
 
+      - name: Move source code
+        run: mv gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha04/tools/CodeGen/ src/
+
       - name: Tune ssh-keys
         env:
             ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}      
