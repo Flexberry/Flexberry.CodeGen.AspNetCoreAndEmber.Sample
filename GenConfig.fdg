@@ -11,7 +11,7 @@
       "EmberJs": {
         "EmberApp": true,
         "EmberAddon": false,
-        "Build": true,
+        "Build": false,
         "GitClone": false,
         "GitPush": false,
         "GhPagesPush": false

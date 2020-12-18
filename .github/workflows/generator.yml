@@ -66,7 +66,7 @@ jobs:
           chmod 0600 .github/workflows/secrets/id_rsa
           ssh-add .github/workflows/secrets/id_rsa      
 
-      - name: Cleanup
+      - name: Git commit and push
         run: |
           git config user.name "Flexberry-man"
           git config user.email "mail@flexberry.net"
