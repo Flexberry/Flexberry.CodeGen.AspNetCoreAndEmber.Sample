@@ -4,7 +4,7 @@
   "JsonMetadataPath": null,
   "OnlineCrpUrl": null,
   "OneShotToken": null,
-  "GenPath": "CodeGen",
+  "GenPath": "../../../src",
   "GenerationItems": {
     "Validate": false,
     "Frontend": {
