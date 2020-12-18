@@ -9,9 +9,9 @@
     "Validate": false,
     "Frontend": {
       "EmberJs": {
-        "EmberApp": false,
+        "EmberApp": true,
         "EmberAddon": false,
-        "Build": false,
+        "Build": true,
         "GitClone": false,
         "GitPush": false,
         "GhPagesPush": false
