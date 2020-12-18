@@ -74,10 +74,10 @@ jobs:
           git config user.email "mail@flexberry.net"
 
           git add --all
-          git commit -m "Flexberry Code Generation"
+          git commit -m "Flexberry code generation"
 
           # Redirect any output to /dev/null to hide any sensitive credential data that might otherwise be exposed.
-          git push --force --quiet > /dev/null 2>&1
+          git push --force --quiet "git@github.com:${GITHUB_REPOSITORY}.git" > /dev/null 2>&1
 
           echo "Done."
 
