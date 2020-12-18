@@ -353,6 +353,6 @@ MigrationBackup/
 .github/
 
 # Code generator
-Gen/
+gen/
 
 
