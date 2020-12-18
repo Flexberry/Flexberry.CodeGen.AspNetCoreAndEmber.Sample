@@ -69,6 +69,7 @@ jobs:
 
       - name: Git commit and push
         run: |
+          set -x
           git config user.name "Flexberry-man"
           git config user.email "mail@flexberry.net"
 
