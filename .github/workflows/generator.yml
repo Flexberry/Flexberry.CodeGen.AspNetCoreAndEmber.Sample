@@ -67,7 +67,7 @@ jobs:
           chmod 0600 .github/workflows/secrets/id_rsa
           ssh-add .github/workflows/secrets/id_rsa      
 
-      - name: Git commit and push
+      - name: Git commit
         run: |
           set -x
           git config user.name "Flexberry-man"
@@ -76,9 +76,11 @@ jobs:
           git add --all
           git commit -m "Flexberry code generation"
 
+      - name: Git push
+        run: |
+          set -x
           # Redirect any output to /dev/null to hide any sensitive credential data that might otherwise be exposed.
           git push --force --quiet "git@github.com:${GITHUB_REPOSITORY}.git" > /dev/null 2>&1
-
           echo "Done."
 
       - name: Cleanup
