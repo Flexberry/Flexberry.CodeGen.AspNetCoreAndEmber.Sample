@@ -40,7 +40,6 @@ namespace NewPlatform.SuperSimpleContactList
         public virtual ICSSoft.STORMNET.DataObject[] OnUpdateContact(NewPlatform.SuperSimpleContactList.Contact UpdatedObject)
         {
             //  *** Start programmer edit section *** (OnUpdateContact)
-
             return new ICSSoft.STORMNET.DataObject[0];
             //  *** End programmer edit section *** (OnUpdateContact)
         }
