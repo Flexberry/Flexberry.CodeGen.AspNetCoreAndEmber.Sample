@@ -76,6 +76,8 @@ jobs:
       - name: Git push
         run: |
           set -x
+          SSH_AUTH_SOCK=/tmp/ssh_agent.sock
+          export SSH_AUTH_SOCK;
           # Redirect any output to /dev/null to hide any sensitive credential data that might otherwise be exposed.
           git push --force --quiet "git@github.com:${GITHUB_REPOSITORY}.git" > /dev/null 2>&1
           echo "Done."
