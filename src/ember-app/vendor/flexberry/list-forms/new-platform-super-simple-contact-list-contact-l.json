@@ -1,0 +1,15 @@
+﻿{
+  "newForm": "new-platform-super-simple-contact-list-contact-e",
+  "editForm": "new-platform-super-simple-contact-list-contact-e",
+  "external": false,
+  "caption": "Contact",
+  "name": "NewPlatformSuperSimpleContactListContactL",
+  "className": "ContactL",
+  "attrs": [],
+  "projections": [
+    {
+      "modelName": "contact",
+      "modelProjection": "ContactL"
+    }
+  ]
+}

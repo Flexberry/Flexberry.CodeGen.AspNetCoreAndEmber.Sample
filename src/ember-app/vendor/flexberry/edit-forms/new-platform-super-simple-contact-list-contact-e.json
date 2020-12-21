@@ -1,0 +1,14 @@
+﻿{
+  "propertyLookup": [],
+  "external": false,
+  "caption": "Contact",
+  "name": "NewPlatformSuperSimpleContactListContactE",
+  "className": "ContactE",
+  "attrs": [],
+  "projections": [
+    {
+      "modelName": "contact",
+      "modelProjection": "ContactE"
+    }
+  ]
+}

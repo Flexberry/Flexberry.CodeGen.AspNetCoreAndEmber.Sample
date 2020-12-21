@@ -1,0 +1,4 @@
+import NewPlatformSuperSimpleContactListContactEController from '../new-platform-super-simple-contact-list-contact-e';
+
+var NewPlatformSuperSimpleContactListContactENewController = NewPlatformSuperSimpleContactListContactEController;
+export default NewPlatformSuperSimpleContactListContactENewController;

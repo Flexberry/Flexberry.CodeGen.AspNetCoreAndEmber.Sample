@@ -1,0 +1,22 @@
+﻿{
+  "applicationCaption": "Super simple contact list",
+  "applicationTitle": "Super simple contact list",
+  "items": [
+    {
+      "link": null,
+      "menuName": "super-simple-contact-list",
+      "caption": "SuperSimpleContactList",
+      "title": "SuperSimpleContactList",
+      "children": [
+        {
+          "link": "new-platform-super-simple-contact-list-contact-l",
+          "menuName": null,
+          "caption": "Contact",
+          "title": "",
+          "children": null
+        }
+      ]
+    }
+  ],
+  "mobile": true
+}
