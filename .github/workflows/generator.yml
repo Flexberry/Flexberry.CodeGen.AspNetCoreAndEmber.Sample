@@ -36,7 +36,7 @@ jobs:
           npm install -g ember-cli@3.1.4
 
       - name: Install NewPlatform.Flexberry.Designer.CommandLine
-        run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha04 -OutputDirectory gen
+        run: nuget install NewPlatform.Flexberry.Designer.CommandLine -Version 0.1.0-alpha05 -OutputDirectory gen
 
       - name: Starting X virtual framebuffer (Xvfb) in background
         run: Xvfb -ac :99 -screen 0 1280x1024x16 &
@@ -45,7 +45,7 @@ jobs:
         run: |
           export DISPLAY=:99
           export SSH_ASKPASS=1
-          mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha04/tools/flexberry.exe ./GenConfig.fdg
+          mono ./gen/NewPlatform.Flexberry.Designer.CommandLine.0.1.0-alpha05/tools/flexberry.exe ./GenConfig.fdg
 
       - name: Tune ssh-keys
         env:
