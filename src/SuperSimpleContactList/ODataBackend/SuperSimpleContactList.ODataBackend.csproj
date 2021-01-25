@@ -8,6 +8,9 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.1.11" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="6.1.0-beta10"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-beta02"></PackageReference>
