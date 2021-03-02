@@ -1,16 +1,14 @@
 ﻿namespace NewPlatform.SuperSimpleContactList
 {
     using System;
-    using System.Linq;
     using ICSSoft.Services;
+    using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Security;
-    using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Hosting.Server.Features;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
@@ -19,102 +17,99 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Services;
-    using Unity;
 
-    using LockService = NewPlatform.Flexberry.Services.LockService;
-
+    /// <summary>
+    /// Класс настройки запуска приложения.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup" /> class.
+        /// </summary>
+        /// <param name="configuration">An application configuration properties.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        private IApplicationBuilder ApplicationBuilder { get; set; }
-
-        private IServerAddressesFeature ServerAddressesFeature { get; set; }
-
+        /// <summary>
+        /// An application configuration properties.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        public string CustomizationString => "";
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public virtual void ConfigureServices(IServiceCollection services)
+        /// <summary>
+        /// Configurate application services.
+        /// </summary>
+        /// <remarks>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </remarks>
+        /// <param name="services">An collection of application services.</param>
+        public void ConfigureServices(IServiceCollection services)
         {
-            /*
-            // Configure Flexberry services (LockService and IDataService) via native DI.
-            {
-                services.AddSingleton<IDataService>(provider =>
-                {
-                    IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-                    ExternalLangDef.LanguageDef.DataService = dataService;
+            string connStr = Configuration["DefConnStr"];
+            services.AddSingleton<ISecurityManager, EmptySecurityManager>();
+            services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
 
-                    return dataService;
-                });
-                
-                services.AddSingleton<ILockService, LockService>();
-            }
-            */
-
-            // Configure Flexberry services via Unity.
-            {
-                IUnityContainer unityContainer = UnityFactory.GetContainer();
-
-                IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-
-                unityContainer.RegisterInstance(dataService);
-                ExternalLangDef.LanguageDef.DataService = dataService;
-
-                unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
-
-                unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-            }
-
-            services.AddMvcCore(options =>
-            {
-                options.Filters.Add<CustomExceptionFilter>();
-                options.EnableEndpointRouting = false;
-            })
+            services.AddMvcCore(
+                    options =>
+                    {
+                        options.Filters.Add<CustomExceptionFilter>();
+                        options.EnableEndpointRouting = false;
+                    })
                 .AddFormatterMappings();
 
             services.AddOData();
 
-            services.AddSingleton<IDataObjectFileAccessor>(provider =>
-            {
-                Uri baseUri = new Uri("http://localhost");
-
-                if (ServerAddressesFeature != null && ServerAddressesFeature.Addresses != null)
+            services.AddSingleton<IDataObjectFileAccessor>(
+                provider =>
                 {
-                    // This works with pure self-hosted service only.
-                    baseUri = new Uri(ServerAddressesFeature.Addresses.Single());
-                }
+                    const string fileControllerPath = "odata/file";
+                    string baseUriRaw = Configuration["BackendRoot"];
+                    var baseUri = new Uri(baseUriRaw);
+                    string uploadPath = Configuration["UploadUrl"];
+                    return new DefaultDataObjectFileAccessor(
+                        baseUri,
+                        fileControllerPath,
+                        uploadPath);
+                });
 
-                var env = provider.GetRequiredService<IHostingEnvironment>();
+            services.AddControllers().AddControllersAsServices();
 
-                return new DefaultDataObjectFileAccessor(baseUri, "api/File", "Uploads");
-            });
-        }   
+            services.AddCors();
+            services
+                .AddHealthChecks()
+                .AddNpgSql(connStr);
+        }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <summary>
+        /// Configurate the HTTP request pipeline.
+        /// </summary>
+        /// <remarks>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </remarks>
+        /// <param name="app">An application configurator.</param>
+        /// <param name="env">Information about web hosting environment.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Save reference to IApplicationBuilder instance.
-            ApplicationBuilder = app;
+            LogService.LogInfo("Инициирован запуск приложения.");
 
-            // Save reference to IServerAddressesFeature instance.
-            ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+            app.UseRouting();
 
-            app.UseMvc(builder =>
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+            app.UseEndpoints(endpoints =>
             {
-                builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
-                builder.MapFileRoute();
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
 
             app.UseODataService(builder =>
             {
+                builder.MapFileRoute();
+
                 var assemblies = new[]
                 {
-                    typeof(Медведь).Assembly,
+                    typeof(Contact).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
