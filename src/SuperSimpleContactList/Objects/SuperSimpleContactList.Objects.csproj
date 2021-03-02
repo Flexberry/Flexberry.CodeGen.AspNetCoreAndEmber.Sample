@@ -2,14 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
-    <LangVersion>8</LangVersion>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
     <AssemblyName>SuperSimpleContactList.Objects</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta14"></PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta14" />
+    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup />
 </Project>

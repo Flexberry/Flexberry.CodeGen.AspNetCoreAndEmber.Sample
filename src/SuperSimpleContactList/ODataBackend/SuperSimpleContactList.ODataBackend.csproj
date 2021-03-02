@@ -2,21 +2,25 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Configurations>Debug;Release</Configurations>
-    <LangVersion>8</LangVersion>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
     <AssemblyName>SuperSimpleContactList.ODataBackend</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="6.1.0-beta10"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-beta02"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0-beta02"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta12"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0-beta02"></PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-beta02" />
+    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0-beta02" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta14" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="6.1.0-beta10" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta12" />
+    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0-beta02" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Objects\SuperSimpleContactList.Objects.csproj"></ProjectReference>
-    <ProjectReference Include="..\BusinessServers\SuperSimpleContactList.BusinessServers.csproj"></ProjectReference>
+    <ProjectReference Include="..\BusinessServers\SuperSimpleContactList.BusinessServers.csproj" />
+    <ProjectReference Include="..\Objects\SuperSimpleContactList.Objects.csproj" />
   </ItemGroup>
 </Project>
