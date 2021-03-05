@@ -26,6 +26,8 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull();
 
         private partial Dictionary<Type, string[]> GetPropertyWithoutGetterCheck();
+
+        private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck();
         #endregion
 
         private IEnumerable<Type> GetObjects()
@@ -150,5 +152,48 @@ namespace NewPlatform.SuperSimpleContactList
                 errors.Any(),
                 $"{Environment.NewLine}Следующие у следующих свойств getter'ы некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
+
+        /// <summary>
+        ///     Тест проверяет, что setter'ы всех свойств не вызывают исключений при пустом объекте.
+        /// </summary>
+        [Fact]
+        public void TestAllSettersAreValid()
+        {
+            // Arrange.
+            var assemblyClasses = GetObjects();
+            var dontCheckDict = GetPropertyWithoutSetterCheck();
+
+            // Act.
+            var errors = new List<string>();
+            foreach (var cl in assemblyClasses)
+            {
+                var instance = Activator.CreateInstance(cl);
+                var classProperties = cl.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.SetMethod != null
+                                && x.DeclaringType != typeof(DataObject)
+                                && !(dontCheckDict.ContainsKey(cl) && dontCheckDict[cl].Contains(x.Name)))
+                    .ToList();
+                foreach (var prop in classProperties)
+                {
+                    var val = prop.PropertyType.IsValueType
+                        ? Activator.CreateInstance(prop.PropertyType)
+                        : null;
+                    try
+                    {
+                        prop.SetValue(instance, val);
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($@"{cl.FullName}.{prop.Name}: {ex.InnerException?.Message ?? ex.Message}");
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}Следующие у следующих свойств setter'ы некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
+
     }
 }

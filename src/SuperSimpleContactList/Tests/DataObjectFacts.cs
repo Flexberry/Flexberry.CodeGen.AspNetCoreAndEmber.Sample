@@ -49,5 +49,15 @@ namespace NewPlatform.SuperSimpleContactList
         {
             return new Dictionary<Type, string[]>();
         }
+
+        /// <summary>
+        /// Получить имена свойств объектов данных,
+        /// у которых сеттер намеренно генерирует исключение, если объект недозагружен.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, у которых сеттер намеренно генерирует исключение, если объект недозагружен.</returns>
+        private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck()
+        {
+            return new Dictionary<Type, string[]>();
+        }
     }
 }
