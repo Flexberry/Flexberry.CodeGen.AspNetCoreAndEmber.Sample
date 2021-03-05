@@ -18,6 +18,11 @@ namespace NewPlatform.SuperSimpleContactList
         private bool CheckAccessTypeThis { get; } = false;
 
         /// <summary>
+        /// Проверять ли, что во всех объектах настроен аудит.
+        /// </summary>
+        private bool CheckAudit { get; } = false;
+
+        /// <summary>
         /// Получить используемый приложением тип сервиса данных.
         /// </summary>
         /// <returns>Тип сервиса данных.</returns>
@@ -78,12 +83,46 @@ namespace NewPlatform.SuperSimpleContactList
 
         /// <summary>
         /// Получить классы объектов данных,
-        /// в которых не задан AcessType=@this.
+        /// в которых намеренно не задан AcessType=@this.
         /// </summary>
-        /// <returns>Список классов, в которых не задан AcessType=@this.</returns>
+        /// <returns>Список классов, в которых намеренно не задан AcessType=@this.</returns>
         private partial IEnumerable<Type> GetDataObjectsWithoutAccessType()
         {
             if (CheckAccessTypeThis)
+            {
+                return Enumerable.Empty<Type>();
+            }
+            else
+            {
+                return GetStoredDataObjects();
+            }
+        }
+
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не настроен аудит.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не настроен аудит.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutAudit()
+        {
+            if (CheckAudit)
+            {
+                return Enumerable.Empty<Type>();
+            }
+            else
+            {
+                return GetStoredDataObjects();
+            }
+        }
+
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не настроен аудит операций.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не настроен аудит операций.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperation()
+        {
+            if (CheckAudit)
             {
                 return Enumerable.Empty<Type>();
             }

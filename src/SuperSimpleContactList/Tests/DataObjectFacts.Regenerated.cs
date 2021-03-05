@@ -9,6 +9,7 @@ namespace NewPlatform.SuperSimpleContactList
 {
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -33,8 +34,16 @@ namespace NewPlatform.SuperSimpleContactList
         private partial IEnumerable<Type> GetTypesWithoutValidViews();
 
         private partial IEnumerable<Type> GetDataObjectsWithoutAccessType();
+
+        private partial IEnumerable<Type> GetDataObjectsWithoutAudit();
+
+        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperation();
         #endregion
 
+        /// <summary>
+        /// Получить хранимые объекты данных из сборки объектов данных.
+        /// </summary>
+        /// <returns>Список классов хранимых объектов данных из сборки объектов данных.</returns>
         private IEnumerable<Type> GetStoredDataObjects()
         {
             return Assembly.GetAssembly(typeof(ObjectsMarker))
@@ -44,6 +53,29 @@ namespace NewPlatform.SuperSimpleContactList
                          && x.IsSubclassOf(typeof(DataObject))
                          && Information.IsStoredType(x))
                 .OrderBy(x => x.FullName);
+        }
+
+        private static IEnumerable<string> GetPropertyNames<T>()
+        {
+            return typeof(T).GetProperties().Select(dataObjProp => dataObjProp.Name).ToArray();
+        }
+
+        /// <summary>
+        /// Получить свойства, определенные в интерфейсе <see cref="IDataObjectWithAuditFields" />.
+        /// </summary>
+        /// <returns>Перечень свойств.</returns>
+        private static IEnumerable<string> AuditProperties()
+        {
+            return GetPropertyNames<IDataObjectWithAuditFields>();
+        }
+
+        /// <summary>
+        /// Получить свойства, определенные в интерфейсе <see cref="DataObject" />.
+        /// </summary>
+        /// <returns>Перечень свойств.</returns>
+        private static IEnumerable<string> DataObjectInnerProperties()
+        {
+            return GetPropertyNames<DataObject>();
         }
 
         /// <summary>
@@ -429,6 +461,179 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 storedDataObjects.Any(),
                 $"{typeof(AccessType).Name} отличается от {nameof(AccessType.@this)} в следующих классах:{Environment.NewLine}" + string.Join(Environment.NewLine, storedDataObjects.Select(x => x.FullName)));
+        }
+
+        /// <summary>
+        /// Проверка наличия настроек аудита для всех классов и их полей.
+        /// </summary>
+        [Fact]
+        public void TestExistenceAuditSettings()
+        {
+            var errorMessages = new List<string>();
+
+            var exceptions = GetDataObjectsWithoutAudit();
+
+            var assemblyClasses = GetStoredDataObjects().Except(exceptions);
+
+            foreach (var curClass in assemblyClasses)
+            {
+                var auditSettings = curClass.GetNestedType(AuditConstants.AuditSettingsClassName);
+                if (auditSettings == null)
+                {
+                    errorMessages.Add($"{curClass.FullName}: Не найден подкласс для настроек аудита.");
+                }
+                else
+                {
+                    bool auditEnabled = (bool)auditSettings.GetField(AuditConstants.AuditEnabledFieldName).GetValue(null);
+                    if (!auditEnabled)
+                    {
+                        errorMessages.Add($"{curClass.FullName}: Не включен аудит.");
+                    }
+                }
+            }
+
+            Assert.False(
+                errorMessages.Any(),
+                string.Join(Environment.NewLine, errorMessages));
+        }
+
+        /// <summary>
+        /// Проверка наличия настроек аудита для всех классов и их полей.
+        /// </summary>
+        [Fact]
+        public void TestAuditOperationsAreValid()
+        {
+            var errorMessages = new List<string>();
+
+            var exceptionsGlobal = GetDataObjectsWithoutAudit();
+            var exceptions = GetDataObjectsWithoutAuditOperation();
+
+            var assemblyClasses = GetStoredDataObjects().Except(exceptionsGlobal).Except(exceptions);
+
+            foreach (var curClass in assemblyClasses)
+            {
+                var auditSettings = curClass.GetNestedType(AuditConstants.AuditSettingsClassName);
+                if (auditSettings == null)
+                {
+                    errorMessages.Add($"{curClass.FullName}: Не найден подкласс для настроек аудита.");
+                }
+                else
+                {
+                    bool insertAuditEnable = (bool)auditSettings.GetField(AuditConstants.InsertAuditFieldName).GetValue(null);
+                    if (!insertAuditEnable)
+                    {
+                        errorMessages.Add($"{curClass.FullName}: Не включен аудит операции создания.");
+                    }
+
+                    bool updateAuditEnable = (bool)auditSettings.GetField(AuditConstants.UpdateAuditFieldName).GetValue(null);
+                    if (!updateAuditEnable)
+                    {
+                        errorMessages.Add($"{curClass.FullName}: Не включен аудит операции изменения.");
+                    }
+
+                    bool deleteAuditEnable = (bool)auditSettings.GetField(AuditConstants.DeleteAuditFieldName).GetValue(null);
+                    if (!deleteAuditEnable)
+                    {
+                        errorMessages.Add($"{curClass.FullName}: Не включен аудит операции удаления.");
+                    }
+                }
+            }
+
+            Assert.False(
+                errorMessages.Any(),
+                string.Join(Environment.NewLine, errorMessages));
+        }
+
+        /// <summary>
+        /// Проверка наличия собственных свойств в представлениях аудита.
+        /// </summary>
+        [Fact]
+        public void TestOwnPropertiesInAuditView()
+        {
+
+            var errorMessages = new List<string>();
+
+            var exceptions = GetDataObjectsWithoutAudit();
+
+            var assemblyClasses = GetStoredDataObjects().Except(exceptions);
+
+            /* Проверяем наличие подкласса аудита в классах-наследниках DataObject,
+               проверяем наличие всех свойств класса (с возможными исключениями) в представлении аудита. */
+            var ignorePropertyNames = AuditProperties().Union(DataObjectInnerProperties());
+            foreach (var curClass in assemblyClasses)
+            {
+                var classProperties = curClass.GetProperties()
+                    .Where(x => Information.IsStoredProperty(curClass, x.Name) && !ignorePropertyNames.Contains(x.Name))
+                    .Select(property => property.Name)
+                    .ToList();
+
+                var auditView = Information.GetView(AuditConstants.DefaultAuditViewName, curClass);
+                if (auditView == null)
+                {
+                    errorMessages.Add($"{curClass.FullName}: Не найдено представление аудита AuditView.");
+                }
+                else
+                {
+                    var viewProperties = auditView.Properties
+                        .Where(x => x.Name.IndexOf('.') == -1)
+                        .Select(x => x.Name)
+                        .ToList();
+                    viewProperties.AddRange(auditView.Details.Select(detail => detail.Name));
+
+                    var propertiesWithNoSettings = classProperties.Where(x => !viewProperties.Contains(x));
+                    errorMessages.AddRange(
+                        propertiesWithNoSettings
+                            .Select(x => $"{curClass.FullName}: Не найдено свойство {x} в отображении аудита."));
+                }
+            }
+
+            Assert.False(
+                errorMessages.Any(),
+                string.Join(Environment.NewLine, errorMessages));
+        }
+
+        /// <summary>
+        /// Проверка валидности представления аудита.
+        /// </summary>
+        [Fact]
+        public void TestAllAuditViewsAreValid()
+        {
+            var errorMessages = new List<string>();
+
+            var exceptions = GetDataObjectsWithoutAudit();
+
+            var assemblyClasses = GetStoredDataObjects().Except(exceptions);
+
+            foreach (var curClass in assemblyClasses)
+            {
+                var auditView = Information.GetView(AuditConstants.DefaultAuditViewName, curClass);
+                if (auditView == null)
+                {
+                    errorMessages.Add($"{curClass.FullName}: Не найдено представление аудита AuditView.");
+                }
+                else
+                {
+                    var viewProperties = auditView.Properties
+                        .Select(x => x.Name)
+                        .ToList();
+
+                    errorMessages.AddRange(
+                        viewProperties
+                            .Where(x => !Information.IsStoredProperty(curClass, x))
+                            .Select(x => $"{curClass.FullName}: Содержит нехранимое свойство {x} в AuditView."));
+
+                    var viewDetails = auditView.Details;
+
+                    errorMessages.AddRange(
+                        viewDetails
+                            .Where(x => x.View.Name != AuditConstants.DefaultAuditViewName)
+                            .Select(x => $"{curClass.FullName}: Содержит детейл {x.Name} с именем отличным от AuditView ({x.View.Name})."));
+                }
+            }
+
+            Assert.False(
+               errorMessages.Any(),
+               string.Join(Environment.NewLine, errorMessages));
         }
     }
 }
