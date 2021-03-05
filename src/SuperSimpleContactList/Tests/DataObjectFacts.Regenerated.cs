@@ -31,6 +31,8 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck();
 
         private partial IEnumerable<Type> GetTypesWithoutValidViews();
+
+        private partial IEnumerable<Type> GetDataObjectsWithoutAccessType();
         #endregion
 
         private IEnumerable<Type> GetStoredDataObjects()
@@ -405,6 +407,28 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 notSerializableTypes.Any(),
                 $"{Environment.NewLine}У классов отсутствует атрибут [Serializable]:{Environment.NewLine}{string.Join(Environment.NewLine, notSerializableTypes)}");
+        }
+
+        /// <summary>
+        ///     Тест проверяет, что все объекты данных имеют <see cref="AccessType.@this" />.
+        /// </summary>
+        [Fact]
+        public void TestAllDataObjectsHasAccessTypeThis()
+        {
+            var dontCheckClasses = GetDataObjectsWithoutAccessType().ToList();
+
+            var storedDataObjects = GetStoredDataObjects()
+                .Where( // и он не содержится в списке исключений.
+                    t => !dontCheckClasses.Contains(t))
+                .Where( // он имеет другой аксесс тайп.
+                    t =>
+                        Attribute.GetCustomAttribute(t, typeof(AccessTypeAttribute)) == null
+                        || ((AccessTypeAttribute)Attribute.GetCustomAttribute(t, typeof(AccessTypeAttribute))).value != AccessType.@this)
+                .ToList();
+
+            Assert.False(
+                storedDataObjects.Any(),
+                $"{typeof(AccessType).Name} отличается от {nameof(AccessType.@this)} в следующих классах:{Environment.NewLine}" + string.Join(Environment.NewLine, storedDataObjects.Select(x => x.FullName)));
         }
     }
 }

@@ -13,6 +13,11 @@ namespace NewPlatform.SuperSimpleContactList
     {
 
         /// <summary>
+        /// Проверять ли, что во всех объектах данных AcessType=@this.
+        /// </summary>
+        private bool CheckAccessTypeThis { get; } = false;
+
+        /// <summary>
         /// Получить используемый приложением тип сервиса данных.
         /// </summary>
         /// <returns>Тип сервиса данных.</returns>
@@ -61,9 +66,31 @@ namespace NewPlatform.SuperSimpleContactList
             return new Dictionary<Type, string[]>();
         }
 
+        /// <summary>
+        /// Получить классы объектов данных, 
+        /// в которых имеются намеренно некорректные представления.
+        /// </summary>
+        /// <returns>Список классов с намеренно некорректными представлениями.</returns>
         private partial IEnumerable<Type> GetTypesWithoutValidViews()
         {
             return Enumerable.Empty<Type>();
+        }
+
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых не задан AcessType=@this.
+        /// </summary>
+        /// <returns>Список классов, в которых не задан AcessType=@this.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutAccessType()
+        {
+            if (CheckAccessTypeThis)
+            {
+                return Enumerable.Empty<Type>();
+            }
+            else
+            {
+                return GetStoredDataObjects();
+            }
         }
     }
 }
