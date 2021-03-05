@@ -21,23 +21,68 @@ namespace NewPlatform.SuperSimpleContactList
     public partial class DataObjectFacts
     {
         #region Customizations
+
+        /// <summary>
+        /// Получить используемый приложением тип сервиса данных.
+        /// </summary>
+        /// <returns>Тип сервиса данных.</returns>
         private partial Type GetDataServiceType();
 
-        private partial Dictionary<Type, string[]> GetPropertyWithoutDataServiceExpression();
+        /// <summary>
+        /// Получить имена свойств объектов данных,
+        /// для которых намеренно не задано DataServiceExpression.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, для которых не задано DataServiceExpression.</returns>
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutDataServiceExpression();
 
-        private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull();
+        /// <summary>
+        /// Получить имена свойств объектов данных с ValueType-типом,
+        /// для которых намеренно не задан атрибут <see cref="NotNullAttribute"/>.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, для которых намеренно не задан атрибут <see cref="NotNullAttribute"/>.</returns>
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutNotNull();
 
-        private partial Dictionary<Type, string[]> GetPropertyWithoutGetterCheck();
+        /// <summary>
+        /// Получить имена свойств объектов данных,
+        /// у которых геттер намеренно генерирует исключение, если объект недозагружен.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, у которых геттер намеренно генерирует исключение, если объект недозагружен.</returns>
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutGetterCheck();
 
-        private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck();
+        /// <summary>
+        /// Получить имена свойств объектов данных,
+        /// у которых сеттер намеренно генерирует исключение, если объект недозагружен.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, у которых сеттер намеренно генерирует исключение, если объект недозагружен.</returns>
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutSetterCheck();
 
-        private partial IEnumerable<Type> GetTypesWithoutValidViews();
+        /// <summary>
+        /// Получить классы объектов данных, 
+        /// в которых имеются намеренно некорректные представления.
+        /// </summary>
+        /// <returns>Список классов с намеренно некорректными представлениями.</returns>
+        private partial IEnumerable<Type> GetTypesWithInvalidViews();
 
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не задан AcessType=@this.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не задан AcessType=@this.</returns>
         private partial IEnumerable<Type> GetDataObjectsWithoutAccessType();
 
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не настроен аудит.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не настроен аудит.</returns>
         private partial IEnumerable<Type> GetDataObjectsWithoutAudit();
 
-        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperation();
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не настроен аудит операций.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не настроен аудит операций.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperations();
         #endregion
 
         /// <summary>
@@ -87,7 +132,7 @@ namespace NewPlatform.SuperSimpleContactList
             // Arrange.
             var dataServiceType = GetDataServiceType();
             var assemblyClasses = GetStoredDataObjects();
-            var dontCheckDict = GetPropertyWithoutDataServiceExpression();
+            var dontCheckDict = GetPropertiesWithoutDataServiceExpression();
             var dontCheckPropertyNames = typeof(DataObject).GetProperties()
                 .Where(o => !Information.IsStoredProperty(typeof(DataObject), o.Name))
                 .Select(o => o.Name);
@@ -122,7 +167,7 @@ namespace NewPlatform.SuperSimpleContactList
         {
             // Arrange.
             var assemblyClasses = GetStoredDataObjects();
-            var dontCheckDict = GetPropertyWithoutNotNull();
+            var dontCheckDict = GetPropertiesWithoutNotNull();
 
             // Act.
             var errors = new List<string>();
@@ -158,7 +203,7 @@ namespace NewPlatform.SuperSimpleContactList
         {
             // Arrange.
             var assemblyClasses = GetStoredDataObjects();
-            var dontCheckDict = GetPropertyWithoutGetterCheck();
+            var dontCheckDict = GetPropertiesWithoutGetterCheck();
 
             // Act.
             var errors = new List<string>();
@@ -197,7 +242,7 @@ namespace NewPlatform.SuperSimpleContactList
         {
             // Arrange.
             var assemblyClasses = GetStoredDataObjects();
-            var dontCheckDict = GetPropertyWithoutSetterCheck();
+            var dontCheckDict = GetPropertiesWithoutSetterCheck();
 
             // Act.
             var errors = new List<string>();
@@ -309,7 +354,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestStaticViewsAreValid()
         {
             // Arrange.
-            var dontCheckClasses = GetTypesWithoutValidViews();
+            var dontCheckClasses = GetTypesWithInvalidViews();
             var assemblyClasses = GetStoredDataObjects();
             var checkedTypes = assemblyClasses.Where(x => !dontCheckClasses.Contains(x)).ToList();
 
@@ -506,7 +551,7 @@ namespace NewPlatform.SuperSimpleContactList
             var errorMessages = new List<string>();
 
             var exceptionsGlobal = GetDataObjectsWithoutAudit();
-            var exceptions = GetDataObjectsWithoutAuditOperation();
+            var exceptions = GetDataObjectsWithoutAuditOperations();
 
             var assemblyClasses = GetStoredDataObjects().Except(exceptionsGlobal).Except(exceptions);
 

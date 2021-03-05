@@ -36,7 +36,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// для которых намеренно не задано DataServiceExpression.
         /// </summary>
         /// <returns>Словарь {Тип, массив имен свойств}, для которых не задано DataServiceExpression.</returns>
-        private partial Dictionary<Type, string[]> GetPropertyWithoutDataServiceExpression()
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutDataServiceExpression()
         {
             return new Dictionary<Type, string[]>();
         }
@@ -46,7 +46,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// для которых намеренно не задан атрибут <see cref="NotNullAttribute"/>.
         /// </summary>
         /// <returns>Словарь {Тип, массив имен свойств}, для которых намеренно не задан атрибут <see cref="NotNullAttribute"/>.</returns>
-        private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull()
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutNotNull()
         {
             return new Dictionary<Type, string[]>();
         }
@@ -56,7 +56,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// у которых геттер намеренно генерирует исключение, если объект недозагружен.
         /// </summary>
         /// <returns>Словарь {Тип, массив имен свойств}, у которых геттер намеренно генерирует исключение, если объект недозагружен.</returns>
-        private partial Dictionary<Type, string[]> GetPropertyWithoutGetterCheck()
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutGetterCheck()
         {
             return new Dictionary<Type, string[]>();
         }
@@ -66,7 +66,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// у которых сеттер намеренно генерирует исключение, если объект недозагружен.
         /// </summary>
         /// <returns>Словарь {Тип, массив имен свойств}, у которых сеттер намеренно генерирует исключение, если объект недозагружен.</returns>
-        private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck()
+        private partial Dictionary<Type, string[]> GetPropertiesWithoutSetterCheck()
         {
             return new Dictionary<Type, string[]>();
         }
@@ -76,7 +76,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// в которых имеются намеренно некорректные представления.
         /// </summary>
         /// <returns>Список классов с намеренно некорректными представлениями.</returns>
-        private partial IEnumerable<Type> GetTypesWithoutValidViews()
+        private partial IEnumerable<Type> GetTypesWithInvalidViews()
         {
             return Enumerable.Empty<Type>();
         }
@@ -120,7 +120,7 @@ namespace NewPlatform.SuperSimpleContactList
         /// в которых намеренно не настроен аудит операций.
         /// </summary>
         /// <returns>Список классов, в которых намеренно не настроен аудит операций.</returns>
-        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperation()
+        private partial IEnumerable<Type> GetDataObjectsWithoutAuditOperations()
         {
             if (CheckAudit)
             {
