@@ -29,6 +29,8 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertyWithoutGetterCheck();
 
         private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck();
+
+        private partial IEnumerable<Type> GetTypesWithoutValidViews();
         #endregion
 
         private IEnumerable<Type> GetStoredDataObjects()
@@ -264,6 +266,49 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 errors.Any(),
                 $"{Environment.NewLine}У следующих хранимых классов DataObject-свойства отсутствует атрибут [PropertyStorage]:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
+
+        /// <summary>
+        ///     Тест проверяет, что статические представления во вложенном классе Views валидны.
+        /// </summary>
+        [Fact]
+        public void TestStaticViewsAreValid()
+        {
+            // Arrange.
+            var dontCheckClasses = GetTypesWithoutValidViews();
+            var assemblyClasses = GetStoredDataObjects();
+            var checkedTypes = assemblyClasses.Where(x => !dontCheckClasses.Contains(x)).ToList();
+
+            // Act.
+            var errors = new List<string>();
+            foreach (var type in checkedTypes)
+            {
+                var viewsType = type.GetNestedType("Views");
+                if (viewsType == null)
+                {
+                    errors.Add($@"{type.FullName}: не содержит Views-subclass.");
+                }
+                else
+                {
+                    var properties = viewsType.GetProperties(BindingFlags.Public | BindingFlags.Static).ToList();
+                    foreach (var prop in properties)
+                    {
+                        try
+                        {
+                            prop.GetValue(null, null);
+                        }
+                        catch (Exception ex)
+                        {
+                            errors.Add($@"{type.FullName}.{prop.Name}: {ex.InnerException?.Message ?? ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}У следующих классов Views-subclass некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
     }
 }

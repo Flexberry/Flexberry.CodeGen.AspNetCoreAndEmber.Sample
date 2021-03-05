@@ -5,6 +5,7 @@ namespace NewPlatform.SuperSimpleContactList
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
@@ -58,6 +59,11 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck()
         {
             return new Dictionary<Type, string[]>();
+        }
+
+        private partial IEnumerable<Type> GetTypesWithoutValidViews()
+        {
+            return Enumerable.Empty<Type>();
         }
     }
 }
