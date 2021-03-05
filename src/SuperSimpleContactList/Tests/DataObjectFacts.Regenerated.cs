@@ -344,5 +344,44 @@ namespace NewPlatform.SuperSimpleContactList
                 errors.Any(),
                 $"{Environment.NewLine}В следующих представлениях детейловых классов не найдены свойство агрегатора:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
+
+        /// <summary>
+        ///     Тест проверяет, что для всех нехранимых свойств добавлены необходимые зависимые свойства.
+        /// </summary>
+        [Fact]
+        public void TestNotStoredPropertiesInViews()
+        {
+            // Arrange.
+            var dataServiceType = GetDataServiceType();
+            var assemblyClasses = GetStoredDataObjects();
+            var errors = new List<string>();
+
+            // Act.
+            foreach (var type in assemblyClasses)
+            {
+                var viewNames = Information.AllViews(type);
+                foreach (string viewName in viewNames)
+                {
+                    // Эталонное представление.
+                    var view = Information.GetView(viewName, type);
+
+                    // Представление, в которое будут добавлены зависимые свойства.
+                    var viewAppended = Information.GetView(viewName, type);
+                    Information.AppendPropertiesFromNotStored(viewAppended, dataServiceType);
+
+                    // Выделим свойства, которые были добавлены методом Information.AppendPropertiesFromNotStored.
+                    var extraProps = viewAppended.Properties.Where(p => !view.CheckPropname(p.Name)).ToList();
+                    if (extraProps.Any())
+                    {
+                        errors.Add($"{type.FullName} {viewName}:{Environment.NewLine}{string.Join(Environment.NewLine, extraProps.Select(p => p.Name))}");
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}В следующих представлениях обнаружены ошибки нехранимых свойств:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
     }
 }
