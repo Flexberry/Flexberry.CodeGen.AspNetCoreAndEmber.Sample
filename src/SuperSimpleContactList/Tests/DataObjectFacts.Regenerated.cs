@@ -310,5 +310,39 @@ namespace NewPlatform.SuperSimpleContactList
                 errors.Any(),
                 $"{Environment.NewLine}У следующих классов Views-subclass некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
+
+        /// <summary>
+        ///     Тест проверяет, что во всех представлениях детейлов присутствует свойство агрегатора.
+        /// </summary>
+        [Fact]
+        public void TestDetailViews()
+        {
+            // Arrange.
+            var assemblyClasses = GetStoredDataObjects();
+            var errors = new List<string>();
+
+            // Act.
+            foreach (var type in assemblyClasses)
+            {
+                string agrProp = Information.GetAgregatePropertyName(type);
+                if (string.IsNullOrEmpty(agrProp))
+                    continue;
+
+                var viewNames = Information.AllViews(type);
+                foreach (string viewName in viewNames)
+                {
+                    var view = Information.GetView(viewName, type);
+                    if (view.Properties.All(p => p.Name != agrProp))
+                    {
+                        errors.Add($"{type.FullName} {viewName}");
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}В следующих представлениях детейловых классов не найдены свойство агрегатора:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
     }
 }
