@@ -28,5 +28,15 @@ namespace NewPlatform.SuperSimpleContactList
         {
             return new Dictionary<Type, string[]>();
         }
+
+        /// <summary>
+        /// Получить имена свойств объектов данных,
+        /// для которых намеренно не задано DataServiceExpression.
+        /// </summary>
+        /// <returns>Словарь {Тип, массив имен свойств}, для которых не задано DataServiceExpression.</returns>
+        private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull()
+        {
+            return new Dictionary<Type, string[]>();
+        }
     }
 }

@@ -19,9 +19,11 @@ namespace NewPlatform.SuperSimpleContactList
     public partial class DataObjectFacts
     {
         #region Customizations
-        private partial Dictionary<Type, string[]> GetPropertyWithoutDataServiceExpression();
-
         private partial Type GetDataServiceType();
+
+        private partial Dictionary<Type, string[]> GetPropertyWithoutDataServiceExpression();
+        
+        private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull();
         #endregion
 
         private IEnumerable<Type> GetObjects()
@@ -34,6 +36,7 @@ namespace NewPlatform.SuperSimpleContactList
                          && Information.IsStoredType(x))
                 .OrderBy(x => x.FullName);
         }
+
 
         /// <summary>
         ///     Тест проверяет, что все нехранимые свойства имеют DSE.
@@ -69,6 +72,42 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 errors.Any(),
                 $"{Environment.NewLine}Следующие нехранимые свойства классов не имеют DSE:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
+
+        /// <summary>
+        ///     Тест проверяет, что все логические поля имеют атрибут NotNull.
+        /// </summary>
+        [Fact]
+        public void TestAllValueTypeHasNotNullFlag()
+        {
+            // Arrange.
+            var assemblyClasses = GetObjects();
+            var dontCheckDict = GetPropertyWithoutNotNull();
+
+            // Act.
+            var errors = new List<string>();
+            foreach (var cl in assemblyClasses)
+            {
+                var classProperties = cl.GetProperties();
+                foreach (var property in classProperties)
+                {
+                    var propType = Information.GetPropertyType(cl, property.Name);
+                    if (!propType.IsConstructedGenericType
+                        && !propType.IsEnum
+                        && propType.IsValueType
+                        && Information.IsStoredProperty(cl, property.Name)
+                        && !Information.GetPropertyNotNull(cl, property.Name)
+                        && !(dontCheckDict.ContainsKey(cl) && dontCheckDict[cl].Contains(property.Name)))
+                    {
+                        errors.Add($@"{cl.FullName}.{property.Name}");
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}Следующие ValueType свойства классов не имеют флага NotNull:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
     }
 }
