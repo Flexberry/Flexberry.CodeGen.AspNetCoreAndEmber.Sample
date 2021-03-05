@@ -31,7 +31,7 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertyWithoutSetterCheck();
         #endregion
 
-        private IEnumerable<Type> GetObjects()
+        private IEnumerable<Type> GetStoredDataObjects()
         {
             return Assembly.GetAssembly(typeof(ObjectsMarker))
                 .GetExportedTypes()
@@ -42,7 +42,6 @@ namespace NewPlatform.SuperSimpleContactList
                 .OrderBy(x => x.FullName);
         }
 
-
         /// <summary>
         ///     Тест проверяет, что все нехранимые свойства имеют DSE.
         /// </summary>
@@ -51,7 +50,7 @@ namespace NewPlatform.SuperSimpleContactList
         {
             // Arrange.
             var dataServiceType = GetDataServiceType();
-            var assemblyClasses = GetObjects();
+            var assemblyClasses = GetStoredDataObjects();
             var dontCheckDict = GetPropertyWithoutDataServiceExpression();
             var dontCheckPropertyNames = typeof(DataObject).GetProperties()
                 .Where(o => !Information.IsStoredProperty(typeof(DataObject), o.Name))
@@ -86,7 +85,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestAllValueTypeHasNotNullFlag()
         {
             // Arrange.
-            var assemblyClasses = GetObjects();
+            var assemblyClasses = GetStoredDataObjects();
             var dontCheckDict = GetPropertyWithoutNotNull();
 
             // Act.
@@ -122,7 +121,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestAllGettersAreValid()
         {
             // Arrange.
-            var assemblyClasses = GetObjects();
+            var assemblyClasses = GetStoredDataObjects();
             var dontCheckDict = GetPropertyWithoutGetterCheck();
 
             // Act.
@@ -161,7 +160,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestAllSettersAreValid()
         {
             // Arrange.
-            var assemblyClasses = GetObjects();
+            var assemblyClasses = GetStoredDataObjects();
             var dontCheckDict = GetPropertyWithoutSetterCheck();
 
             // Act.
@@ -203,7 +202,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestAllBusinessServerNamesAreValid()
         {
             // Arrange.
-            var assemblyClasses = GetObjects();
+            var assemblyClasses = GetStoredDataObjects();
 
             // Act.
             var errors = new List<string>();
@@ -238,6 +237,33 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 errors.Any(),
                 $"{Environment.NewLine}У следующих классов атрибут {nameof(BusinessServerAttribute)} некорректен:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
+
+        /// <summary>
+        ///     Тест проверяет, что у всех хранимых классов DataObject-свойства имеют <see cref="PropertyStorageAttribute"/>.
+        /// </summary>
+        [Fact]
+        public void TestAllDataObjectPropertyHasPropertyStorageAttribute()
+        {
+            // Arrange.
+            var assemblyClasses = GetStoredDataObjects();
+            var errors = new List<string>();
+
+            // Act.
+            foreach (var type in assemblyClasses)
+            {
+                var classProperties = type.GetProperties()
+                    .Where(
+                        prop => Information.IsStoredProperty(type, prop.Name)
+                             && prop.PropertyType.IsSubclassOf(typeof(DataObject))
+                             && !prop.GetCustomAttributes<PropertyStorageAttribute>().Any());
+                errors.AddRange(classProperties.Select(prop => $"{type.FullName}.{prop.Name}"));
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}У следующих хранимых классов DataObject-свойства отсутствует атрибут [PropertyStorage]:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
     }
 }
