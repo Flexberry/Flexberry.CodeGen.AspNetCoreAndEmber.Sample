@@ -8,6 +8,7 @@
 namespace NewPlatform.SuperSimpleContactList
 {
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -195,5 +196,48 @@ namespace NewPlatform.SuperSimpleContactList
                 $"{Environment.NewLine}Следующие у следующих свойств setter'ы некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
 
+        /// <summary>
+        ///     Тест проверяет, что атрибут <see cref="BusinessServerAttribute" /> корректен.
+        /// </summary>
+        [Fact]
+        public void TestAllBusinessServerNamesAreValid()
+        {
+            // Arrange.
+            var assemblyClasses = GetObjects();
+
+            // Act.
+            var errors = new List<string>();
+            foreach (var type in assemblyClasses)
+            {
+                try
+                {
+                    var atrs = type.GetCustomAttributes<BusinessServerAttribute>(false).ToList();
+                    if (atrs.Count > 1)
+                    {
+                        errors.Add($"{type.FullName}: более одного атрибута {nameof(BusinessServerAttribute)}.");
+                    }
+                    else if (atrs.Any())
+                    {
+                        var atr = atrs.First();
+                        var method = atr.BusinessServerType.GetMethod(
+                            $"OnUpdate{type.Name}",
+                            BindingFlags.Public | BindingFlags.Instance);
+                        if (method == null)
+                        {
+                            errors.Add($"{type.FullName}: не найден метод \"OnUpdate{type.Name}\" в БСе {atr.BusinessServerType.FullName}.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errors.Add($@"{type.FullName}: {ex.InnerException?.Message ?? ex.Message}");
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}У следующих классов атрибут {nameof(BusinessServerAttribute)} некорректен:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
     }
 }
