@@ -22,8 +22,10 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Type GetDataServiceType();
 
         private partial Dictionary<Type, string[]> GetPropertyWithoutDataServiceExpression();
-        
+
         private partial Dictionary<Type, string[]> GetPropertyWithoutNotNull();
+
+        private partial Dictionary<Type, string[]> GetPropertyWithoutGetterCheck();
         #endregion
 
         private IEnumerable<Type> GetObjects()
@@ -108,6 +110,45 @@ namespace NewPlatform.SuperSimpleContactList
             Assert.False(
                 errors.Any(),
                 $"{Environment.NewLine}Следующие ValueType свойства классов не имеют флага NotNull:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+        }
+
+        /// <summary>
+        ///     Тест проверяет, что getter'ы всех свойств не вызывают исключений при пустом объекте.
+        /// </summary>
+        [Fact]
+        public void TestAllGettersAreValid()
+        {
+            // Arrange.
+            var assemblyClasses = GetObjects();
+            var dontCheckDict = GetPropertyWithoutGetterCheck();
+
+            // Act.
+            var errors = new List<string>();
+            foreach (var cl in assemblyClasses)
+            {
+                var instance = Activator.CreateInstance(cl);
+                var classProperties = cl.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.GetMethod != null
+                                && x.DeclaringType != typeof(DataObject)
+                                && !(dontCheckDict.ContainsKey(cl) && dontCheckDict[cl].Contains(x.Name)))
+                    .ToList();
+                foreach (var prop in classProperties)
+                {
+                    try
+                    {
+                        prop.GetValue(instance, null);
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($@"{cl.FullName}.{prop.Name}: {ex.InnerException?.Message ?? ex.Message}");
+                    }
+                }
+            }
+
+            // Assert.
+            Assert.False(
+                errors.Any(),
+                $"{Environment.NewLine}Следующие у следующих свойств getter'ы некорректны:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
     }
 }
