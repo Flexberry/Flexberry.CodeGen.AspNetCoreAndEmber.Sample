@@ -383,5 +383,28 @@ namespace NewPlatform.SuperSimpleContactList
                 errors.Any(),
                 $"{Environment.NewLine}В следующих представлениях обнаружены ошибки нехранимых свойств:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
         }
+
+        /// <summary>
+        ///     Тест проверяет, что у всех классов присутствует атрибут <see cref="SerializableAttribute" />.
+        /// </summary>
+        [Fact]
+        public void TestAllDataObjectHasSerializableAttribute()
+        {
+            // Arrange.
+            var types = Assembly.GetAssembly(typeof(ObjectsMarker)).GetExportedTypes();
+
+            // Act.
+            var notSerializableTypes = types.Where(
+                x => x.IsClass
+                     && (x.IsSubclassOf(typeof(DataObject)) || x.IsSubclassOf(typeof(DetailArray)))
+                     && !x.IsSerializable)
+                .Select(x => x.FullName)
+                .ToList();
+
+            // Assert.
+            Assert.False(
+                notSerializableTypes.Any(),
+                $"{Environment.NewLine}У классов отсутствует атрибут [Serializable]:{Environment.NewLine}{string.Join(Environment.NewLine, notSerializableTypes)}");
+        }
     }
 }
