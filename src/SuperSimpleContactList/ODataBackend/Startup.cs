@@ -64,7 +64,7 @@
             services.AddSingleton<IDataObjectFileAccessor>(
                 provider =>
                 {
-                    const string fileControllerPath = "odata/file";
+                    const string fileControllerPath = "api/file";
                     string baseUriRaw = Configuration["BackendRoot"];
                     var baseUri = new Uri(baseUriRaw);
                     string uploadPath = Configuration["UploadUrl"];
