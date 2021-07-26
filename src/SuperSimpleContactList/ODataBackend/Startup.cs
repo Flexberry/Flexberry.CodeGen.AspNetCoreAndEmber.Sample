@@ -17,6 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Services;
+    using Unity;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -47,9 +48,6 @@
         public void ConfigureServices(IServiceCollection services)
         {
             string connStr = Configuration["DefConnStr"];
-            services.AddSingleton<ISecurityManager, EmptySecurityManager>();
-            services.AddTransient<ILockService, Flexberry.Services.LockService>();
-            services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
 
             services.AddMvcCore(
                     options =>
@@ -119,6 +117,41 @@
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
+        }
+
+        /// <summary>
+        /// Configurate application container.
+        /// </summary>
+        /// <param name="container">Container to configure.</param>
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            // FYI: сервисы, в т.ч. контроллеры, создаются из дочернего контейнера.
+            while (container.Parent != null)
+            {
+                container = container.Parent;
+            }
+
+            // FYI: сервис данных ходит в контейнер UnityFactory.
+            container.RegisterInstance(Configuration);
+
+            RegisterORM(container);
+        }
+
+        /// <summary>
+        /// Register ORM implementations.
+        /// </summary>
+        /// <param name="container">Container to register at.</param>
+        private void RegisterORM(IUnityContainer container)
+        {
+            string connStr = Configuration["DefConnStr"];
+            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
+            container.RegisterSingleton<IDataService, PostgresDataService>(
+                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
         }
     }
 }
