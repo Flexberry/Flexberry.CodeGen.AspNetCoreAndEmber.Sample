@@ -59,19 +59,6 @@
 
             services.AddOData();
 
-            services.AddSingleton<IDataObjectFileAccessor>(
-                provider =>
-                {
-                    const string fileControllerPath = "api/file";
-                    string baseUriRaw = Configuration["BackendRoot"];
-                    var baseUri = new Uri(baseUriRaw);
-                    string uploadPath = Configuration["UploadUrl"];
-                    return new DefaultDataObjectFileAccessor(
-                        baseUri,
-                        fileControllerPath,
-                        uploadPath);
-                });
-
             services.AddControllers().AddControllersAsServices();
 
             services.AddCors();
@@ -139,7 +126,26 @@
             // FYI: сервис данных ходит в контейнер UnityFactory.
             container.RegisterInstance(Configuration);
 
+            RegisterDataObjectFileAccessor(container);
             RegisterORM(container);
+        }
+
+        /// <summary>
+        /// Register implementation of <see cref="IDataObjectFileAccessor"/>.
+        /// </summary>
+        /// <param name="container">Container to register at.</param>
+        private void RegisterDataObjectFileAccessor(IUnityContainer container)
+        {
+            const string fileControllerPath = "api/file";
+            string baseUriRaw = Configuration["BackendRoot"];
+            var baseUri = new Uri(baseUriRaw);
+            string uploadPath = Configuration["UploadUrl"];
+            container.RegisterSingleton<IDataObjectFileAccessor, DefaultDataObjectFileAccessor>(
+                Invoke.Constructor(
+                    baseUri,
+                    fileControllerPath,
+                    uploadPath,
+                    null));
         }
 
         /// <summary>
