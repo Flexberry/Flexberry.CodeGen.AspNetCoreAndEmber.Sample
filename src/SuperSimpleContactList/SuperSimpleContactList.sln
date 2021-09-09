@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperSimpleContactList.ODat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperSimpleContactList.IntegrationTests", "IntegrationTests\SuperSimpleContactList.IntegrationTests.csproj", "{9B436916-61B0-4B25-A37D-4845436189E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{613262CD-45FA-4A4A-8BA1-08C79DAA21FD}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
+		..\..\.github\workflows\generator.yml = ..\..\.github\workflows\generator.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

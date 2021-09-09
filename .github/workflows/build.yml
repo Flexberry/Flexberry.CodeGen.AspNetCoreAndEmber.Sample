@@ -1,0 +1,70 @@
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the develop-v5.2 branch
+  push:
+    branches: [ develop, 'main' ]
+  pull_request:
+    branches: [ develop, 'main' ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build-postgres"
+  build-and-test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: flexberry/alt.p8-postgresql-postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: p@ssw0rd
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    env:
+      ConnectionStringPostgres: "SERVER=localhost;User ID=postgres;Password=p@ssw0rd;Port=5432;"
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: NuGet Restore
+        run: nuget restore "./src/SuperSimpleContactList/SuperSimpleContactList.sln" -NonInteractive
+        
+      - name: Install xunit.runner.console
+        run: nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+        
+      - name: Compile code
+        run:  msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=Debug "./src/SuperSimpleContactList/SuperSimpleContactList.sln" 
+
+      - name: Test under dotnet
+        run: dotnet test ./src/SuperSimpleContactList/Tests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.Tests.dll
+
+      - name: Integration test under dotnet
+        run: dotnet test ./src/SuperSimpleContactList/IntegrationTests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.IntegrationTests.dll
+
+      - name: Test under mono
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./src/SuperSimpleContactList/Tests/bin/Debug/net461/SuperSimpleContactList.Tests.dll
+
+      - name: Integration test under mono
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./src/SuperSimpleContactList/IntegrationTests/bin/Debug/net461/SuperSimpleContactList.IntegrationTests.dll
+        
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -Rf .ssh .github *
