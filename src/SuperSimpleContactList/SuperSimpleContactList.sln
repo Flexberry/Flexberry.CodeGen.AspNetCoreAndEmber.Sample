@@ -19,6 +19,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{613262
 		..\..\.github\workflows\generator.yml = ..\..\.github\workflows\generator.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{50A1297E-4EF4-4764-8ADF-081C430E80D1}"
+	ProjectSection(SolutionItems) = preProject
+		..\Docker\create-image.cmd = ..\Docker\create-image.cmd
+		..\Docker\docker-compose.yml = ..\Docker\docker-compose.yml
+		..\Docker\Dockerfile = ..\Docker\Dockerfile
+		..\Docker\start.cmd = ..\Docker\start.cmd
+		..\Docker\stop.cmd = ..\Docker\stop.cmd
+		..\Docker\vhosts.conf = ..\Docker\vhosts.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{3B475ED6-4EFE-43F9-B8D0-BC17645A85B3}"
+	ProjectSection(SolutionItems) = preProject
+		..\Docker\SQL\Dockerfile.MSSql = ..\Docker\SQL\Dockerfile.MSSql
+		..\Docker\SQL\Dockerfile.Oracle = ..\Docker\SQL\Dockerfile.Oracle
+		..\Docker\SQL\Dockerfile.PostgreSql = ..\Docker\SQL\Dockerfile.PostgreSql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +65,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B475ED6-4EFE-43F9-B8D0-BC17645A85B3} = {50A1297E-4EF4-4764-8ADF-081C430E80D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C4BA7E1-8C55-414B-AF80-FC0FF2EC7D4E}
