@@ -31,6 +31,7 @@ namespace NewPlatform.SuperSimpleContactList
         "ers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
     [PublishName("Contact")]
     [AutoAltered()]
+    [Serializable]
     [Caption("Personal contact")]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
     [View("ContactE", new string[] {

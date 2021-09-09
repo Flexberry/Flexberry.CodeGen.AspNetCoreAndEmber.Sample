@@ -110,7 +110,7 @@
 
                 var assemblies = new[]
                 {
-                    typeof(Contact).Assembly,
+                    typeof(ObjectsMarker).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
