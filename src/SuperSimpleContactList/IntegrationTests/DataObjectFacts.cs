@@ -1,25 +1,20 @@
 ﻿namespace NewPlatform.SuperSimpleContactList
 {
-    using ICSSoft.STORMNET;
-    using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.Windows.Forms;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.FunctionalLanguage;
+    using ICSSoft.STORMNET.Windows.Forms;
     using Xunit;
-    
 
     public partial class DataObjectFacts
     {
-
         private readonly IDataService _dataService;
 
         public DataObjectFacts(IDataService dataService) => _dataService = dataService;
-
 
         #region Customizations
 
@@ -46,7 +41,6 @@
                 .OrderBy(x => x.FullName);
         }
 
-
         /// <summary>
         ///     Проверить, что все хранимые классы могут читаться по всем представлениям.
         /// </summary>
@@ -66,7 +60,6 @@
                 var views = viewNames.Select(x => Information.GetView(x, type)).Union(new[] { viewOnlyThat });
                 foreach (var view in views)
                 {
-
                     try
                     {
                         var lcs = LoadingCustomizationStruct.GetSimpleStruct(type, view);

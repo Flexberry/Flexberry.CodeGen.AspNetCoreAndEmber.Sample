@@ -7,13 +7,13 @@
 
 namespace NewPlatform.SuperSimpleContactList
 {
-    using ICSSoft.STORMNET;
-    using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.Business.Audit;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
     using Xunit;
 
     public partial class DataObjectFacts
@@ -593,7 +593,6 @@ namespace NewPlatform.SuperSimpleContactList
         [Fact]
         public void TestOwnPropertiesInAuditView()
         {
-
             var errorMessages = new List<string>();
 
             var exceptions = GetDataObjectsWithoutAudit();

@@ -4,7 +4,6 @@
  */
 namespace SuperSimpleContactList.IntegrationTests
 {
-
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Security;
     using Microsoft.Extensions.Configuration;
@@ -20,7 +19,7 @@ namespace SuperSimpleContactList.IntegrationTests
 
         public void ConfigureServices(IServiceCollection services, HostBuilderContext context)
         {
-            string connStr =context.Configuration["DefConnStr"];
+            string connStr = context.Configuration["DefConnStr"];
             services.AddSingleton<ISecurityManager, EmptySecurityManager>();
             services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
 

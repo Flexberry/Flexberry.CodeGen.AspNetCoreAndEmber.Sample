@@ -11,7 +11,6 @@ namespace NewPlatform.SuperSimpleContactList
 
     public partial class DataObjectFacts
     {
-
         /// <summary>
         /// Проверять ли, что во всех объектах данных AcessType=@this.
         /// </summary>
