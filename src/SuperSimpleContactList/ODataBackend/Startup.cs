@@ -48,6 +48,7 @@
         {
             string connStr = Configuration["DefConnStr"];
             services.AddSingleton<ISecurityManager, EmptySecurityManager>();
+            services.AddTransient<ILockService, Flexberry.Services.LockService>();
             services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
 
             services.AddMvcCore(
