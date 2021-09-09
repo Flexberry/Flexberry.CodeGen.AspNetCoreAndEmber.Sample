@@ -17,6 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Services;
+    using Unity;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -47,9 +48,6 @@
         public void ConfigureServices(IServiceCollection services)
         {
             string connStr = Configuration["DefConnStr"];
-            services.AddSingleton<ISecurityManager, EmptySecurityManager>();
-            services.AddTransient<ILockService, Flexberry.Services.LockService>();
-            services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
 
             services.AddMvcCore(
                     options =>
@@ -60,19 +58,6 @@
                 .AddFormatterMappings();
 
             services.AddOData();
-
-            services.AddSingleton<IDataObjectFileAccessor>(
-                provider =>
-                {
-                    const string fileControllerPath = "odata/file";
-                    string baseUriRaw = Configuration["BackendRoot"];
-                    var baseUri = new Uri(baseUriRaw);
-                    string uploadPath = Configuration["UploadUrl"];
-                    return new DefaultDataObjectFileAccessor(
-                        baseUri,
-                        fileControllerPath,
-                        uploadPath);
-                });
 
             services.AddControllers().AddControllersAsServices();
 
@@ -119,6 +104,60 @@
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
+        }
+
+        /// <summary>
+        /// Configurate application container.
+        /// </summary>
+        /// <param name="container">Container to configure.</param>
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            // FYI: сервисы, в т.ч. контроллеры, создаются из дочернего контейнера.
+            while (container.Parent != null)
+            {
+                container = container.Parent;
+            }
+
+            // FYI: сервис данных ходит в контейнер UnityFactory.
+            container.RegisterInstance(Configuration);
+
+            RegisterDataObjectFileAccessor(container);
+            RegisterORM(container);
+        }
+
+        /// <summary>
+        /// Register implementation of <see cref="IDataObjectFileAccessor"/>.
+        /// </summary>
+        /// <param name="container">Container to register at.</param>
+        private void RegisterDataObjectFileAccessor(IUnityContainer container)
+        {
+            const string fileControllerPath = "api/file";
+            string baseUriRaw = Configuration["BackendRoot"];
+            var baseUri = new Uri(baseUriRaw);
+            string uploadPath = Configuration["UploadUrl"];
+            container.RegisterSingleton<IDataObjectFileAccessor, DefaultDataObjectFileAccessor>(
+                Invoke.Constructor(
+                    baseUri,
+                    fileControllerPath,
+                    uploadPath,
+                    null));
+        }
+
+        /// <summary>
+        /// Register ORM implementations.
+        /// </summary>
+        /// <param name="container">Container to register at.</param>
+        private void RegisterORM(IUnityContainer container)
+        {
+            string connStr = Configuration["DefConnStr"];
+            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
+            container.RegisterSingleton<IDataService, PostgresDataService>(
+                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
         }
     }
 }
