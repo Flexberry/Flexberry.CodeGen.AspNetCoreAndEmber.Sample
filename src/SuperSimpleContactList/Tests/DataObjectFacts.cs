@@ -9,6 +9,9 @@ namespace NewPlatform.SuperSimpleContactList
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
+    /// <summary>
+    /// Класс с тестами для проверки корректности объектной модели.
+    /// </summary>
     public partial class DataObjectFacts
     {
         /// <summary>
@@ -20,6 +23,12 @@ namespace NewPlatform.SuperSimpleContactList
         /// Проверять ли, что во всех объектах настроен аудит.
         /// </summary>
         private bool CheckAudit { get; } = false;
+
+        /// <summary>
+        /// Проверять ли, что во всех объектах данных есть атрибут Serializable.
+        /// </summary>
+        private bool CheckSerializable { get; } = false;
+
 
         /// <summary>
         /// Получить используемый приложением тип сервиса данных.
@@ -88,6 +97,23 @@ namespace NewPlatform.SuperSimpleContactList
         private partial IEnumerable<Type> GetDataObjectsWithoutAccessType()
         {
             if (CheckAccessTypeThis)
+            {
+                return Enumerable.Empty<Type>();
+            }
+            else
+            {
+                return GetStoredDataObjects();
+            }
+        }
+
+        /// <summary>
+        /// Получить классы объектов данных,
+        /// в которых намеренно не задан Serializable.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не задан Serializable.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutSerializable()
+        {
+            if (CheckSerializable)
             {
                 return Enumerable.Empty<Type>();
             }

@@ -70,6 +70,13 @@ namespace NewPlatform.SuperSimpleContactList
 
         /// <summary>
         /// Получить классы объектов данных,
+        /// в которых намеренно не задан Serializable.
+        /// </summary>
+        /// <returns>Список классов, в которых намеренно не задан Serializable.</returns>
+        private partial IEnumerable<Type> GetDataObjectsWithoutSerializable();
+
+        /// <summary>
+        /// Получить классы объектов данных,
         /// в которых намеренно не настроен аудит.
         /// </summary>
         /// <returns>Список классов, в которых намеренно не настроен аудит.</returns>
@@ -468,10 +475,14 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestAllDataObjectHasSerializableAttribute()
         {
             // Arrange.
+            var dontCheckClasses = GetDataObjectsWithoutSerializable().ToList();
             var types = Assembly.GetAssembly(typeof(ObjectsMarker)).GetExportedTypes();
 
             // Act.
-            var notSerializableTypes = types.Where(
+            var notSerializableTypes = types
+                .Where(
+                    t => !dontCheckClasses.Contains(t))
+                .Where(
                 x => x.IsClass
                      && (x.IsSubclassOf(typeof(DataObject)) || x.IsSubclassOf(typeof(DetailArray)))
                      && !x.IsSerializable)
@@ -490,8 +501,10 @@ namespace NewPlatform.SuperSimpleContactList
         [Fact]
         public void TestAllDataObjectsHasAccessTypeThis()
         {
+            // Arrange.
             var dontCheckClasses = GetDataObjectsWithoutAccessType().ToList();
 
+            // Act.
             var storedDataObjects = GetStoredDataObjects()
                 .Where( // и он не содержится в списке исключений.
                     t => !dontCheckClasses.Contains(t))
@@ -501,6 +514,7 @@ namespace NewPlatform.SuperSimpleContactList
                         || ((AccessTypeAttribute)Attribute.GetCustomAttribute(t, typeof(AccessTypeAttribute))).value != AccessType.@this)
                 .ToList();
 
+            // Assert.
             Assert.False(
                 storedDataObjects.Any(),
                 $"{typeof(AccessType).Name} отличается от {nameof(AccessType.@this)} в следующих классах:{Environment.NewLine}" + string.Join(Environment.NewLine, storedDataObjects.Select(x => x.FullName)));
