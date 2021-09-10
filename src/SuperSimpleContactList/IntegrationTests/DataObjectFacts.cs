@@ -123,7 +123,7 @@
                         if (failedObjects > 0)
                         {
                             string key = $"{type.FullName}.{prop.Name}\t{prop.PropertyType}";
-                            string sql = (_dataService as SQLDataService)?.GenerateSQLSelect(lcs, false) ?? "";
+                            string sql = (_dataService as SQLDataService)?.GenerateSQLSelect(lcs, false) ?? string.Empty;
                             errors[key] = $"Обнаружено {failedObjects} объектов не соответствующих {prop.PropertyType}:{Environment.NewLine}{sql}";
                         }
                     }
