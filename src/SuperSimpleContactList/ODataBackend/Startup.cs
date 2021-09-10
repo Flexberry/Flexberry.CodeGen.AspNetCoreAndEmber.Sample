@@ -103,7 +103,7 @@
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
@@ -141,6 +141,12 @@
         {
             const string fileControllerPath = "api/file";
             string baseUriRaw = Configuration["BackendRoot"];
+            if (string.IsNullOrEmpty(baseUriRaw))
+            {
+                throw new System.Configuration.ConfigurationErrorsException("BackendRoot is not specified in Configuration or enviromnent variables.");
+            }
+
+            Console.WriteLine($"baseUriRaw is {baseUriRaw}");
             var baseUri = new Uri(baseUriRaw);
             string uploadPath = Configuration["UploadUrl"];
             container.RegisterSingleton<IDataObjectFileAccessor, DefaultDataObjectFileAccessor>(
@@ -158,6 +164,11 @@
         private void RegisterORM(IUnityContainer container)
         {
             string connStr = Configuration["DefConnStr"];
+            if (string.IsNullOrEmpty(connStr))
+            {
+                throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
+            }
+
             container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
             container.RegisterSingleton<IDataService, PostgresDataService>(
                 Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
