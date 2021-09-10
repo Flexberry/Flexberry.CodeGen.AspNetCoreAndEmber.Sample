@@ -26,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{50A129
 		..\Docker\Dockerfile = ..\Docker\Dockerfile
 		..\Docker\start.cmd = ..\Docker\start.cmd
 		..\Docker\stop.cmd = ..\Docker\stop.cmd
-		..\Docker\vhosts.conf = ..\Docker\vhosts.conf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{3B475ED6-4EFE-43F9-B8D0-BC17645A85B3}"
