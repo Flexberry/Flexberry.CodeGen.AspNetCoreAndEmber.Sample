@@ -16,22 +16,21 @@ namespace NewPlatform.SuperSimpleContactList
     using ICSSoft.STORMNET;
     
     
-    //  *** Start programmer edit section *** (Using statements)
+    // *** Start programmer edit section *** (Using statements)
 
-    //  *** End programmer edit section *** (Using statements)
+    // *** End programmer edit section *** (Using statements)
 
 
     /// <summary>
     /// Contact.
     /// </summary>
-    //  *** Start programmer edit section *** (Contact CustomAttributes)
+    // *** Start programmer edit section *** (Contact CustomAttributes)
 
-    //  *** End programmer edit section *** (Contact CustomAttributes)
+    // *** End programmer edit section *** (Contact CustomAttributes)
     [BusinessServer("NewPlatform.SuperSimpleContactList.ContactBS, SuperSimpleContactList.BusinessServ" +
         "ers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
     [PublishName("Contact")]
     [AutoAltered()]
-    [Serializable]
     [Caption("Personal contact")]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
     [View("ContactE", new string[] {
@@ -47,72 +46,72 @@ namespace NewPlatform.SuperSimpleContactList
         
         private string fValue;
         
-        //  *** Start programmer edit section *** (Contact CustomMembers)
+        // *** Start programmer edit section *** (Contact CustomMembers)
 
-        //  *** End programmer edit section *** (Contact CustomMembers)
+        // *** End programmer edit section *** (Contact CustomMembers)
 
         
         /// <summary>
         /// Contact name.
         /// </summary>
-        //  *** Start programmer edit section *** (Contact.Name CustomAttributes)
+        // *** Start programmer edit section *** (Contact.Name CustomAttributes)
 
-        //  *** End programmer edit section *** (Contact.Name CustomAttributes)
+        // *** End programmer edit section *** (Contact.Name CustomAttributes)
         [StrLen(255)]
         public virtual string Name
         {
             get
             {
-                //  *** Start programmer edit section *** (Contact.Name Get start)
+                // *** Start programmer edit section *** (Contact.Name Get start)
 
-                //  *** End programmer edit section *** (Contact.Name Get start)
+                // *** End programmer edit section *** (Contact.Name Get start)
                 string result = this.fName;
-                //  *** Start programmer edit section *** (Contact.Name Get end)
+                // *** Start programmer edit section *** (Contact.Name Get end)
 
-                //  *** End programmer edit section *** (Contact.Name Get end)
+                // *** End programmer edit section *** (Contact.Name Get end)
                 return result;
             }
             set
             {
-                //  *** Start programmer edit section *** (Contact.Name Set start)
+                // *** Start programmer edit section *** (Contact.Name Set start)
 
-                //  *** End programmer edit section *** (Contact.Name Set start)
+                // *** End programmer edit section *** (Contact.Name Set start)
                 this.fName = value;
-                //  *** Start programmer edit section *** (Contact.Name Set end)
+                // *** Start programmer edit section *** (Contact.Name Set end)
 
-                //  *** End programmer edit section *** (Contact.Name Set end)
+                // *** End programmer edit section *** (Contact.Name Set end)
             }
         }
         
         /// <summary>
         /// Contact value.
         /// </summary>
-        //  *** Start programmer edit section *** (Contact.Value CustomAttributes)
+        // *** Start programmer edit section *** (Contact.Value CustomAttributes)
 
-        //  *** End programmer edit section *** (Contact.Value CustomAttributes)
+        // *** End programmer edit section *** (Contact.Value CustomAttributes)
         [StrLen(255)]
         public virtual string Value
         {
             get
             {
-                //  *** Start programmer edit section *** (Contact.Value Get start)
+                // *** Start programmer edit section *** (Contact.Value Get start)
 
-                //  *** End programmer edit section *** (Contact.Value Get start)
+                // *** End programmer edit section *** (Contact.Value Get start)
                 string result = this.fValue;
-                //  *** Start programmer edit section *** (Contact.Value Get end)
+                // *** Start programmer edit section *** (Contact.Value Get end)
 
-                //  *** End programmer edit section *** (Contact.Value Get end)
+                // *** End programmer edit section *** (Contact.Value Get end)
                 return result;
             }
             set
             {
-                //  *** Start programmer edit section *** (Contact.Value Set start)
+                // *** Start programmer edit section *** (Contact.Value Set start)
 
-                //  *** End programmer edit section *** (Contact.Value Set start)
+                // *** End programmer edit section *** (Contact.Value Set start)
                 this.fValue = value;
-                //  *** Start programmer edit section *** (Contact.Value Set end)
+                // *** Start programmer edit section *** (Contact.Value Set end)
 
-                //  *** End programmer edit section *** (Contact.Value Set end)
+                // *** End programmer edit section *** (Contact.Value Set end)
             }
         }
         

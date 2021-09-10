@@ -14,34 +14,34 @@ namespace NewPlatform.SuperSimpleContactList
     using System.Xml;
     
     
-    //  *** Start programmer edit section *** (Using statements)
+    // *** Start programmer edit section *** (Using statements)
 
-    //  *** End programmer edit section *** (Using statements)
+    // *** End programmer edit section *** (Using statements)
 
 
     /// <summary>
     /// Contact BS.
     /// </summary>
-    //  *** Start programmer edit section *** (ContactBS CustomAttributes)
+    // *** Start programmer edit section *** (ContactBS CustomAttributes)
 
-    //  *** End programmer edit section *** (ContactBS CustomAttributes)
+    // *** End programmer edit section *** (ContactBS CustomAttributes)
     [ICSSoft.STORMNET.AccessType(ICSSoft.STORMNET.AccessType.none)]
     public class ContactBS : ICSSoft.STORMNET.Business.BusinessServer
     {
         
-        //  *** Start programmer edit section *** (ContactBS CustomMembers)
+        // *** Start programmer edit section *** (ContactBS CustomMembers)
 
-        //  *** End programmer edit section *** (ContactBS CustomMembers)
+        // *** End programmer edit section *** (ContactBS CustomMembers)
 
         
-        //  *** Start programmer edit section *** (OnUpdateContact CustomAttributes)
+        // *** Start programmer edit section *** (OnUpdateContact CustomAttributes)
 
-        //  *** End programmer edit section *** (OnUpdateContact CustomAttributes)
+        // *** End programmer edit section *** (OnUpdateContact CustomAttributes)
         public virtual ICSSoft.STORMNET.DataObject[] OnUpdateContact(NewPlatform.SuperSimpleContactList.Contact UpdatedObject)
         {
-            //  *** Start programmer edit section *** (OnUpdateContact)
+            // *** Start programmer edit section *** (OnUpdateContact)
             return new ICSSoft.STORMNET.DataObject[0];
-            //  *** End programmer edit section *** (OnUpdateContact)
+            // *** End programmer edit section *** (OnUpdateContact)
         }
     }
 }
