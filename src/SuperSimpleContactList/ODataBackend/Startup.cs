@@ -79,6 +79,9 @@
         {
             LogService.LogInfo("Инициирован запуск приложения.");
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());

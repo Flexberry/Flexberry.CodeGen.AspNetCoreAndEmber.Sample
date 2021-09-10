@@ -9,6 +9,10 @@ module.exports = function(environment) {
     backendUrl = 'http://localhost:6500';
   }
 
+  if (environment === 'docker') {
+    // For docker backendUrl setting.
+    backendUrl = 'http://localhost';
+  }
 
   let ENV = {
     modulePrefix: 'ember-app',
