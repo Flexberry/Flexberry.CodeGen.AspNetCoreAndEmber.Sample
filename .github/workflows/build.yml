@@ -56,7 +56,11 @@ jobs:
         run: dotnet test ./src/SuperSimpleContactList/Tests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.Tests.dll
 
       - name: Integration test under dotnet
-        run: dotnet test ./src/SuperSimpleContactList/IntegrationTests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.IntegrationTests.dll
+        run: |
+          echo "CREATE DATABASE appdb; CREATE USER flexberryuser WITH password 'jhv'; GRANT ALL privileges ON DATABASE appdb TO flexberryuser;" > create.sql;
+          until psql -U postgres <create.sql; do echo "Wait...";sleep 2; done ;
+          until psql -U flexberryuser -d appdb < ./src/SQL/PostgreSql.create.sql; do echo 'Wait...';sleep 2; done ;
+          dotnet test ./src/SuperSimpleContactList/IntegrationTests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.IntegrationTests.dll
         
       - name: Cleanup
         if: always()
