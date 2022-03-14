@@ -55,6 +55,14 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertiesWithoutSetterCheck();
 
         /// <summary>
+        /// Получить имена представлений объектов данных, являющихся детейлами,
+        /// в которых намеренно отсутствует свойство-агрегатор.
+        /// </summary>
+        /// <returns><see cref="Dictionary{Type, string[]}"/> с именами представлений объектов-детейлов,
+        /// в которых намеренно отсутсвует свойство-агрегатор</returns>
+        private partial Dictionary<Type, string[]> GetViewsWithoutAgregateProperty();
+
+        /// <summary>
         /// Получить классы объектов данных,
         /// в которых имеются намеренно некорректные представления.
         /// </summary>
@@ -417,6 +425,7 @@ namespace NewPlatform.SuperSimpleContactList
         public void TestDetailViews()
         {
             // Arrange.
+            var viewsWithoutAgregateProperty = GetViewsWithoutAgregateProperty();
             var assemblyClasses = GetStoredDataObjects();
             var errors = new List<string>();
 
@@ -428,7 +437,8 @@ namespace NewPlatform.SuperSimpleContactList
                     continue;
 
                 var viewNames = Information.AllViews(type);
-                foreach (string viewName in viewNames)
+                foreach (string viewName in viewNames.Where(x => !viewsWithoutAgregateProperty.ContainsKey(type)
+                                                                || !viewsWithoutAgregateProperty[type].Contains(x)))
                 {
                     var view = Information.GetView(viewName, type);
                     if (view.Properties.All(p => p.Name != agrProp))

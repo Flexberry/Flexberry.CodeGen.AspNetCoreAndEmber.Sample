@@ -79,6 +79,17 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
+        /// Получить имена представлений объектов данных, являющихся детейлами,
+        /// в которых намеренно отсутствует свойство-агрегатор.
+        /// </summary>
+        /// <returns><see cref="Dictionary{Type, string[]}"/> с именами представлений объектов-детейлов,
+        /// в которых намеренно отсутсвует свойство-агрегатор</returns>
+        private partial Dictionary<Type, string[]> GetViewsWithoutAgregateProperty()
+        {
+            return new Dictionary<Type, string[]>();
+        }
+
+        /// <summary>
         /// Получить классы объектов данных,
         /// в которых имеются намеренно некорректные представления.
         /// </summary>
