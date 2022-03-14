@@ -105,6 +105,21 @@ namespace NewPlatform.SuperSimpleContactList
                 .OrderBy(x => x.FullName);
         }
 
+        /// <summary>
+        /// Получить хранимые объекты данных и массивы детейлов из сборки объектов данных.
+        /// </summary>
+        /// <returns>Список классов хранимых объектов данных и массивов детейлов из сборки объектов данных.</returns>
+        private IEnumerable<Type> GetStoredDataObjectsAndDetails()
+        {
+            return Assembly.GetAssembly(typeof(ObjectsMarker))
+                .GetExportedTypes()
+                .Where(
+                    x => x.IsClass
+                         && ((x.IsSubclassOf(typeof(DataObject)) && Information.IsStoredType(x))
+                            || x.IsSubclassOf(typeof(DetailArray))))
+                .OrderBy(x => x.FullName);
+        }
+
         private static IEnumerable<string> GetPropertyNames<T>()
         {
             return typeof(T).GetProperties().Select(dataObjProp => dataObjProp.Name).ToArray();

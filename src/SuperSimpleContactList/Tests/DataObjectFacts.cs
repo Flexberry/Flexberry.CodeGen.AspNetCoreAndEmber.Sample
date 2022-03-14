@@ -118,7 +118,7 @@ namespace NewPlatform.SuperSimpleContactList
             }
             else
             {
-                return GetStoredDataObjects();
+                return GetStoredDataObjectsAndDetails();
             }
         }
 
