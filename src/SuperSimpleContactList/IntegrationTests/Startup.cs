@@ -1,8 +1,4 @@
-﻿/*
- * Пришлось сменить неймспейс, потому что иначе XUnit.DependencyInjection версии 7.х не может подтянуть startup-класс.
- * В версии 7.х в отличие от предыдущих версий этим поведением нельзя управлять.
- */
-namespace SuperSimpleContactList.IntegrationTests
+﻿namespace NewPlatform.SuperSimpleContactList
 {
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Security;
