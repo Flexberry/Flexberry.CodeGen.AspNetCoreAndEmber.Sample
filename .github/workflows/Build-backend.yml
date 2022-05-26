@@ -25,5 +25,5 @@ jobs:
     - name: Build
       run: dotnet build --no-restore src/SuperSimpleContactList/ODataBackend/SuperSimpleContactList.ODataBackend.csproj
     
-#     - name: Test
-#       run: dotnet test --no-build --verbosity normal
+    - name: Test
+      run: dotnet test --no-build --verbosity normal /src/SuperSimpleContactList/Tests/SuperSimpleContactList.Tests.csproj
