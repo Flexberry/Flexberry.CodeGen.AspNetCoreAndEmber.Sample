@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: 18.x
         cache: 'npm'
+        working-directory: /src/ember-app/
     - run: yarn install
     - run: bower install
     - run: npm test
