@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 3.1
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/SuperSimpleContactList/ODataBackend/SuperSimpleContactList.ODataBackend.csproj
     
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore src/SuperSimpleContactList/ODataBackend/SuperSimpleContactList.ODataBackend.csproj
     
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+#     - name: Test
+#       run: dotnet test --no-build --verbosity normal
