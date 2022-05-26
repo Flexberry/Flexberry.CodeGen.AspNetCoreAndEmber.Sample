@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.ember-version }}
-      uses: actions/setup-ember@v3
+      uses: emberjs@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
