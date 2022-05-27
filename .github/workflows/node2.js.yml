@@ -30,4 +30,4 @@ jobs:
           npm install -g bower
           npm install -g ember-cli@3.1.4
       - name: build
-        run:  ember-cli@3.1.4 build -e test-dev ./src/ember-app
+        run:  yarn ember build -e test-dev ./src/ember-app
