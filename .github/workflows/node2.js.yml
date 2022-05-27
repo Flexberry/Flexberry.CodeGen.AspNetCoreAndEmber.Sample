@@ -35,7 +35,7 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: src/ember-app
       - name: install-bower
-        run: npm install bower
+        run: bower install
         working-directory: src/ember-app
       - name: build
         run:  yarn run build -e test-dev
