@@ -29,6 +29,7 @@ jobs:
           yarn global add bower
           npm install -g bower
           npm install -g ember-cli@3.1.4
+          npm install devicejs@0.2.7
         working-directory: src/ember-app
       - name: install dependencies
         run: yarn install --frozen-lockfile
