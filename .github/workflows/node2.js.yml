@@ -35,6 +35,7 @@ jobs:
         working-directory: src/ember-app
       - name: install-bower
         run: npm install bower
+        working-directory: src/ember-app
       - name: build
         run:  yarn run build -e test-dev
         working-directory: src/ember-app
