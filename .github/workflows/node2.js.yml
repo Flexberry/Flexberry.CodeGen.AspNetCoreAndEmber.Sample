@@ -29,6 +29,8 @@ jobs:
           yarn global add bower
           npm install -g bower
           npm install -g ember-cli@3.1.4
+      - name: install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
       - name: build
         run:  yarn run ember build -e test-dev
         working-directory: src/ember-app
