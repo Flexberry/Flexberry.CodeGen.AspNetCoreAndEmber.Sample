@@ -40,9 +40,19 @@ jobs:
       - name: build
         run:  yarn run build -e test-dev
         working-directory: src/ember-app
-      - name: test JSCS
-        run: ember test -e test-dev --src/ember-app/tests --filter="JSCS" 
-        working-directory: src/ember-app/tests
+#       - name: test JSCS
+#         run: ember test -e test-dev --src/ember-app/tests --filter="JSCS" 
+#         working-directory: src/ember-app/tests
       - name: test ESLint
         run: ember test -e test-dev --src/ember-app/tests --filter="ESLint" 
         working-directory: src/ember-app/tests
+      - name: test Unit
+        run: ember test -e test-dev --src/ember-app/tests --filter="Unit" 
+        working-directory: src/ember-app/tests
+#       - name: test Integration
+#         run: ember test -e test-dev --src/ember-app/tests --filter="Integration" 
+#         working-directory: src/ember-app/tests
+#       - name: test Acceptance
+#         run: ember test -e test-dev --src/ember-app/tests --filter="Acceptance" 
+#         working-directory: src/ember-app/tests
+
