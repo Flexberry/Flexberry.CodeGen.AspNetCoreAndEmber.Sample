@@ -31,7 +31,7 @@ jobs:
           npm install -g ember-cli@3.1.4
         working-directory: src/ember-app
       - name: devicejs
-        run: yarn install devicejs-0.2.7
+        run: yarn add devicejs-0.2.7
       - name: install dependencies
         run: yarn install --frozen-lockfile
         working-directory: src/ember-app
