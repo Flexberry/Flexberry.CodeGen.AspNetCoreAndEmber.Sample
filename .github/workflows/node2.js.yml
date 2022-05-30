@@ -38,7 +38,7 @@ jobs:
         run: bower install
         working-directory: src/ember-app
       - name: build
-        run:  emver build -e test-dev
+        run:  ember build -e test-dev
         working-directory: src/ember-app
 #       - name: test JSCS
 #         run: ember test -e test-dev --src/ember-app/tests --filter="JSCS" 
