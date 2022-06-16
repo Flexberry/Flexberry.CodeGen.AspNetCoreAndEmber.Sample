@@ -13,7 +13,8 @@ module.exports = {
       args: [
         // --no-sandbox is needed when running Chrome inside a container
         process.env.TRAVIS ? '--no-sandbox' : null,
-
+        // for Gitlab need '--no-sandbox' without " process.env.TRAVIS ?"
+        // '--no-sandbox',
         '--disable-gpu',
         '--headless',
         '--remote-debugging-port=0',
