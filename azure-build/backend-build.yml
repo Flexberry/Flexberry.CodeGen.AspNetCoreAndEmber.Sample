@@ -1,0 +1,51 @@
+# # ASP.NET Core
+# # Build and test ASP.NET Core projects targeting .NET Core.
+# # Add steps that run tests, create a NuGet package, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger: 
+  branches:
+    include:
+      - pr
+    exclude:
+      - master
+#   paths:
+#     include:
+#       - services/Risogd.Integration.Services.Aisogd
+
+pool:
+  name: FastAgents
+  demands: Agent.Name -equals dotnet-3.1
+
+variables:
+  BuildConfiguration: 'Debug'
+  projectPath1: 'src/SuperSimpleContactList/ODataBackend/SuperSimpleContactList.ODataBackend.csproj'
+
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: restore
+  inputs:
+    command: 'restore' 
+    projects: 'src/SuperSimpleContactList/SuperSimpleContactList.sln'
+
+         
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: 'src/SuperSimpleContactList/ODataBackend/SuperSimpleContactList.ODataBackend.csproj'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'src/SuperSimpleContactList/Tests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.Tests.dll'
+
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: 'echo "CREATE DATABASE appdb; CREATE USER flexberryuser WITH password ''jhv''; GRANT ALL privileges ON DATABASE appdb TO flexberryuser;" > create.sql;
+#                 until psql postgresql://postgres:p%40ssw0rd@localhost - < create.sql; do echo "Wait...";sleep 2; done ;
+#                 until psql postgresql://flexberryuser:jhv@localhost/appdb < ./src/SQL/PostgreSql.create.sql; do echo ''Wait...'';sleep 2; done ;
+#                 dotnet test ./src/SuperSimpleContactList/IntegrationTests/bin/Debug/netcoreapp3.1/SuperSimpleContactList.IntegrationTests.dll'''
