@@ -1,0 +1,82 @@
+# # ASP.NET Core
+# # Build and test ASP.NET Core projects targeting .NET Core.
+# # Add steps that run tests, create a NuGet package, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger: 
+  branches:
+    include:
+      - pr
+
+    exclude:
+      - master
+  # paths:
+  #   include:
+  #     - services/Risogd.Integration.Services.Aisogd
+
+pool:
+  name: FastAgents
+  demands: EMBER -equals 3.1.4
+
+variables:
+  SourceDir: 'src/ember-app'
+
+steps:
+- task: CmdLine@1
+  displayName: 'Выполнить yarn install'
+  inputs:
+    filename: yarn
+    arguments: install
+    workingFolder: '$(SourceDir)'
+
+- task: CmdLine@1
+  displayName: 'Выполнить bower install'
+  inputs:
+    filename: bower
+    arguments: 'install --allow-root'
+    workingFolder: '$(SourceDir)'
+
+- task: CmdLine@1
+  displayName: 'Выполнить ember build'
+  inputs:
+    filename: ember
+    arguments: 'build -e test-dev'
+    workingFolder: '$(SourceDir)'
+
+# - task: CmdLine@1
+#   displayName: 'Выполнить ember test JSCS'
+#   inputs:
+#     filename: ember
+#     arguments: 'test -e test-dev --path=$(OutputPath) --filter="JSCS"'
+#     workingFolder: '$(SourceDir)'
+
+- task: CmdLine@1
+  displayName: 'Выполнить ember test ESLint'
+  inputs:
+    filename: ember
+    arguments: 'test -e test-dev --path=$(OutputPath) --filter="ESLint"'
+    workingFolder: '$(SourceDir)'
+
+- task: CmdLine@1
+  displayName: 'Выполнить ember test Unit'
+  inputs:
+    filename: ember
+    arguments: 'test -e test-dev --path=$(OutputPath) --filter="Unit"'
+    workingFolder: '$(SourceDir)'
+# - task: CmdLine@1
+#   displayName: 'Выполнить ember test Integration'
+#   inputs:
+#     filename: ember
+#     arguments: 'test -e test-dev --path=$(OutputPath) --filter="Integration"'
+#     workingFolder: '$(SourceDir)'
+
+# - task: CmdLine@1
+#   displayName: 'Выполнить ember test Acceptance'
+#   inputs:
+#     filename: ember
+#     arguments: 'test -e test-dev --path=$(OutputPath) --filter="Acceptance"'
+#     workingFolder: '$(SourceDir)'
+
+- script: 'rm -rf $(Agent.BuildDirectory)'
+  displayName: 'Выполнить rm'
+  condition: always()
