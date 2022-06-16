@@ -1,0 +1,11 @@
+pool:
+  name: FastAgents
+  demands: Agent.Name -equals msbuild-2
+
+steps:
+- task: Docker@0
+  inputs:
+    dockerRegistryEndpoint: 'dh.ics.perm.ru'
+    action: 'Build an image'
+    dockerFile: 'src/Dockerfile'
+    imageName: '$(Build.Repository.Name):$(Build.BuildId)'
