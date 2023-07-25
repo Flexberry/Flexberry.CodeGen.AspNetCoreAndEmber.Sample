@@ -1,8 +1,7 @@
-﻿namespace SuperSimpleContactList.WebApi.Controllers
+namespace SuperSimpleContactList.WebApi.Controllers
 {
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.FunctionalLanguage;
     using Microsoft.AspNetCore.Mvc;
     using NewPlatform.SuperSimpleContactList;
     using static ICSSoft.Services.CurrentUserService;
@@ -14,9 +13,14 @@
     [ApiController]
     public class Home : Controller
     {
-        private IDataService dataService;
-        private IUser user;
+        private readonly IDataService dataService;
+        private readonly IUser user;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Home"/> class.
+        /// </summary>
+        /// <param name="dataService">DataService.</param>
+        /// <param name="user">Current User.</param>
         public Home(IDataService dataService, IUser user)
         {
             this.dataService = dataService;
@@ -28,28 +32,34 @@
         /// </summary>
         /// <returns>Contacts names.</returns>
         [HttpGet]
-        public IActionResult Get()
+        public string GetContactsNames()
         {
             try
             {
-                var lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Contact), Contact.Views.ContactE);
-                List<Contact> resultList = dataService.LoadObjects(lcs).Cast<Contact>().ToList();
+                View view = new View();
+                view.DefineClassType = typeof(Contact);
+                view.AddProperty("Name");
+                var lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Contact), view);
+
+                ObjectStringDataView[] resultList = dataService.LoadStringedObjectView(',', lcs);
 
                 List<string> contactsNames = new List<string>();
 
-                foreach (Contact contact in resultList)
+                foreach (ObjectStringDataView contactObject in resultList)
                 {
-                    contactsNames.Add(contact.Name);
+                    contactsNames.Add(contactObject.Data);
                 }
 
-                return new JsonResult(contactsNames);
+                string resultMessatge = string.Join(", ", contactsNames.ToArray()) + " for User " + user.Login;
+
+                return resultMessatge;
             }
             catch (Exception ex)
             {
-                string errorMessage = "Request error - " + ex;
+                string errorMessage = "Contacts names read error: " + ex;
                 LogService.LogError(errorMessage);
 
-                return new JsonResult(errorMessage);
+                return errorMessage;
             }
         }
     }

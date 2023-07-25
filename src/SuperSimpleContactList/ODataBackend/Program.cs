@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.SuperSimpleContactList
+namespace NewPlatform.SuperSimpleContactList
 {
     using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;

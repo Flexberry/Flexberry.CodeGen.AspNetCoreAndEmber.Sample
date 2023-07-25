@@ -9,14 +9,14 @@ namespace NewPlatform.SuperSimpleContactList
     using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
-    /// Основной класс приложения.
+    /// РћСЃРЅРѕРІРЅРѕР№ РєР»Р°СЃСЃ РїСЂРёР»РѕР¶РµРЅРёСЏ.
     /// </summary>
     public static class Program
     {
         /// <summary>
-        /// Точка входа в приложение.
+        /// РўРѕС‡РєР° РІС…РѕРґР° РІ РїСЂРёР»РѕР¶РµРЅРёРµ.
         /// </summary>
-        /// <param name="args">Аргументы запуска.</param>
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹ Р·Р°РїСѓСЃРєР°.</param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -42,10 +42,10 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Создать и настроить UnityContainer.
+        /// РЎРѕР·РґР°С‚СЊ Рё РЅР°СЃС‚СЂРѕРёС‚СЊ UnityContainer.
         /// </summary>
-        /// <param name="configuration">Конфигурация приложения.</param>
-        /// <returns>Контейнер.</returns>
+        /// <param name="configuration">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
+        /// <returns>РљРѕРЅС‚РµР№РЅРµСЂ.</returns>
         private static UnityContainer ConfigureContainer(ConfigurationManager configuration)
         {
             UnityContainer container = new UnityContainer();
@@ -58,10 +58,10 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Регистрация реализации комопнентов ОРМ.
+        /// Р РµРіРёСЃС‚СЂР°С†РёСЏ СЂРµР°Р»РёР·Р°С†РёРё РєРѕРјРѕРїРЅРµРЅС‚РѕРІ РћР Рњ.
         /// </summary>
-        /// <param name="container">Контейнер для регистрации.</param>
-        /// <param name="configuration">Конфигурация приложения.</param>
+        /// <param name="container">РљРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ СЂРµРіРёСЃС‚СЂР°С†РёРё.</param>
+        /// <param name="configuration">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
         private static void RegisterORM(IUnityContainer container, ConfigurationManager configuration)
         {
             string connStr = configuration["DefConnStr"];
@@ -70,9 +70,17 @@ namespace NewPlatform.SuperSimpleContactList
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
-            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
-            container.RegisterSingleton<IDataService, PostgresDataService>(
-                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+            // Register SecurityManager.
+            ISecurityManager securityManager = new EmptySecurityManager();
+            container.RegisterInstance<ISecurityManager>(securityManager, InstanceLifetime.Singleton);
+
+            // Register DataService.
+            IDataService dataService = new PostgresDataService(securityManager)
+            {
+                CustomizationString = connStr
+            };
+
+            container.RegisterInstance<IDataService>(dataService, InstanceLifetime.Singleton);
         }
     }
 }
