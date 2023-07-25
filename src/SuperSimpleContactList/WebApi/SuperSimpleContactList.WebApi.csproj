@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="2.2.1" />
+    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0" />
+    <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessServers\SuperSimpleContactList.BusinessServers.csproj" />
+    <ProjectReference Include="..\Objects\SuperSimpleContactList.Objects.csproj" />
+  </ItemGroup>
+
+</Project>
