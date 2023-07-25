@@ -5,9 +5,7 @@
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "BackendRoot": "http://localhost:5000",
-        "DefConnStr": ""
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

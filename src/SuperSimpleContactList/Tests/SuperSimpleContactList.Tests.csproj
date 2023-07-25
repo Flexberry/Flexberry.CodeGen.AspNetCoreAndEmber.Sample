@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>latest</LangVersion>
     <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
     <AssemblyName>SuperSimpleContactList.Tests</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.15.2" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.0.0" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
