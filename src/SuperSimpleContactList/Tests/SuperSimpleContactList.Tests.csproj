@@ -12,8 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.15.2" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.0.0" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.1.1" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
