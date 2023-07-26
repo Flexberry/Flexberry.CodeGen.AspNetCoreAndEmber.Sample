@@ -50,7 +50,7 @@ namespace NewPlatform.SuperSimpleContactList
         {
             UnityContainer container = new UnityContainer();
 
-            container.RegisterSingleton<IUser, CurrentUser>();
+            container.RegisterType<IUser, CurrentUser>();
 
             RegisterORM(container, configuration);
 
@@ -70,17 +70,9 @@ namespace NewPlatform.SuperSimpleContactList
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
-            // Register SecurityManager.
-            ISecurityManager securityManager = new EmptySecurityManager();
-            container.RegisterInstance<ISecurityManager>(securityManager, InstanceLifetime.Singleton);
-
-            // Register DataService.
-            IDataService dataService = new PostgresDataService(securityManager)
-            {
-                CustomizationString = connStr
-            };
-
-            container.RegisterInstance<IDataService>(dataService, InstanceLifetime.Singleton);
+            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
+            container.RegisterSingleton<IDataService, PostgresDataService>(
+                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
         }
     }
 }
