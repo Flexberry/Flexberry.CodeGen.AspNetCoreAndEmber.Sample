@@ -28,9 +28,18 @@ namespace NewPlatform.SuperSimpleContactList
 
             builder.Services.AddMvcCore();
             builder.Services.AddHealthChecks().AddNpgSql(configuration["DefConnStr"]);
+
+            string allowedHosts = configuration["AllowedHosts"];
+
+            if (string.IsNullOrEmpty(allowedHosts))
+            {
+                throw new System.Configuration.ConfigurationErrorsException("AllowedHosts is not specified in Configuration or enviromnent variables.");
+            }
+
             builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-                builder.AllowAnyMethod()
+                builder.WithOrigins(allowedHosts)
+                       .AllowAnyMethod()
                        .AllowCredentials()
                        .AllowAnyHeader();
             }));

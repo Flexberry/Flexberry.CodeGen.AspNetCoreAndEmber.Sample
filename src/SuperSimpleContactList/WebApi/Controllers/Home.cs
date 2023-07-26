@@ -29,6 +29,7 @@ namespace SuperSimpleContactList.WebApi.Controllers
 
         /// <summary>
         /// GET Request example by url /api/Home.
+        /// This is the example method. NOT INCLUDED IN GENERATION.
         /// </summary>
         /// <returns>Contacts names.</returns>
         [HttpGet]
