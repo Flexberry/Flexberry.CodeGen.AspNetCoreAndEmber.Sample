@@ -14,7 +14,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
-    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
