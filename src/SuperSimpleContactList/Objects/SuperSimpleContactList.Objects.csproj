@@ -8,7 +8,7 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup />

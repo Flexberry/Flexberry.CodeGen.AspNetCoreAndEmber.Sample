@@ -55,11 +55,10 @@
                         options.Filters.Add<CustomExceptionFilter>();
                         options.EnableEndpointRouting = false;
                     })
-                .AddFormatterMappings();
+                .AddFormatterMappings()
+                .AddControllersAsServices();
 
             services.AddOData();
-
-            services.AddControllers().AddControllersAsServices();
 
             services.AddCors();
             services
