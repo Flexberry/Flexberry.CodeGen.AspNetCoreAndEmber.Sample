@@ -22,7 +22,6 @@ namespace SuperSimpleContactList.IntegrationTests
             string connStr = context.Configuration["DefConnStr"];
             services.AddSingleton<ISecurityManager, EmptySecurityManager>();
             services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
-
         }
     }
 }

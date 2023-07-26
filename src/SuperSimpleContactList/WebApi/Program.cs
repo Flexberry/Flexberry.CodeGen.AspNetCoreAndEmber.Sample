@@ -1,11 +1,11 @@
 namespace NewPlatform.SuperSimpleContactList
 {
-    using Microsoft.AspNetCore.Builder;
-    using Unity;
-    using Unity.Microsoft.DependencyInjection;
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Security;
+    using Microsoft.AspNetCore.Builder;
+    using Unity;
+    using Unity.Microsoft.DependencyInjection;
     using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>

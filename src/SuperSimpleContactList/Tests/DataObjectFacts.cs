@@ -29,7 +29,6 @@ namespace NewPlatform.SuperSimpleContactList
         /// </summary>
         private bool CheckSerializable { get; } = false;
 
-
         /// <summary>
         /// Получить используемый приложением тип сервиса данных.
         /// </summary>
@@ -80,7 +79,7 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Получить классы объектов данных, 
+        /// Получить классы объектов данных,
         /// в которых имеются намеренно некорректные представления.
         /// </summary>
         /// <returns>Список классов с намеренно некорректными представлениями.</returns>
