@@ -7,11 +7,6 @@ trigger:
   branches:
     include:
       - pr
-    exclude:
-      - master
-#   paths:
-#     include:
-#       - services/Risogd.Integration.Services.Aisogd
 
 pool:
   name: FastAgents
