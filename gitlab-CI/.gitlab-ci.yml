@@ -12,12 +12,12 @@ cache:
 #   iname: 'dh.ics.perm.ru/test/my-test-image'
 
 
-build-job:
+front-job:
   variables:
     TRAVIS: '1'
   tags:
     - docker
-  image: timbru31/node-chrome
+  image: timbru31/node-chrome:18
   stage: build-front
   script:
     - echo "Сборка приложения..."
