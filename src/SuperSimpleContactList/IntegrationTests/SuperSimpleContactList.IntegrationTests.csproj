@@ -6,6 +6,8 @@
     <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
     <AssemblyName>SuperSimpleContactList.IntegrationTests</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
@@ -19,11 +21,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Moq" Version="4.15.2" />
     <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.1.1" />
-    <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
