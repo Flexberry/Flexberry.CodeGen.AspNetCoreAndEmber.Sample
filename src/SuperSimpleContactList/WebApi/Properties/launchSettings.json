@@ -6,7 +6,7 @@
       "applicationUrl": "http://localhost:6600",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "BackendRoot": "http://localhost",
+        "BackendRoot": "http://localhost:6600",
         "DefConnStr": ""
       }
     }
