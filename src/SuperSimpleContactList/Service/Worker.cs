@@ -1,39 +1,35 @@
-namespace NewPlatform.SuperSimpleContactList.WebApi.Controllers
+namespace NewPlatform.SuperSimpleContactList
 {
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using Microsoft.AspNetCore.Mvc;
-    using NewPlatform.SuperSimpleContactList;
     using static ICSSoft.Services.CurrentUserService;
 
-    /// <summary>
-    /// Controller example with DataService and User.
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class Home : Controller
+    public class Worker : BackgroundService
     {
         private readonly IDataService dataService;
         private readonly IUser user;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Home"/> class.
-        /// </summary>
-        /// <param name="dataService">DataService.</param>
-        /// <param name="user">Current User.</param>
-        public Home(IDataService dataService, IUser user)
+        public Worker(IDataService dataService, IUser user)
         {
             this.dataService = dataService;
             this.user = user;
         }
 
-        /// <summary>
-        /// GET Request example by url /api/Home.
-        /// This is the example method. NOT INCLUDED IN GENERATION.
-        /// </summary>
-        /// <returns>Contacts names.</returns>
-        [HttpGet]
-        public string GetContactsNames()
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+
+            string data = LoadExampleDataAsString();
+            string message = "Сервис запущен. Загружены тестовые данные " + data;
+            LogService.LogInfo(message);
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                // Логика фонового сервиса. Будет срабатывать раз в секунду.
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+
+        private string LoadExampleDataAsString()
         {
             try
             {
@@ -41,7 +37,6 @@ namespace NewPlatform.SuperSimpleContactList.WebApi.Controllers
                 view.DefineClassType = typeof(Contact);
                 view.AddProperty("Name");
                 var lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Contact), view);
-
                 ObjectStringDataView[] resultList = dataService.LoadStringedObjectView(',', lcs);
 
                 List<string> contactsNames = new List<string>();
