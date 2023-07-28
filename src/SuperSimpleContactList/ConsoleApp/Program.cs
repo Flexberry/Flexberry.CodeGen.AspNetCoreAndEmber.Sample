@@ -24,12 +24,11 @@
 
             IConfiguration config = builder.Build();
 
-            // Регистрация контейнера (не входит в генерацию).
+            // Регистрация контейнера.
             UnityContainer container = ConfigureContainer(config);
 
-            // Запуск контейнера (не входит в генерацию).
+            // Получение тестовых данных (не входит в генерацию).
             IDataLoader loader = container.Resolve<IDataLoader>();
-
             loader.GetData();
         }
 
@@ -43,6 +42,8 @@
             UnityContainer container = new UnityContainer();
 
             container.RegisterType<IUser, CurrentUser>();
+
+            // Регистрация DataLoader (не входит в генерацию).
             container.RegisterType<IDataLoader, DataLoader>();
 
             RegisterORM(container, configuration);
