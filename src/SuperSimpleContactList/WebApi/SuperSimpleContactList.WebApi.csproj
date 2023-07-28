@@ -1,37 +1,36 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
-    <TargetFrameworks>net7.0</TargetFrameworks>
-    <Configurations>Debug;Release</Configurations>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
-    <AssemblyName>SuperSimpleContactList.Tests</AssemblyName>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-  </ItemGroup>
+
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="6.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Moq" Version="4.15.2" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.4" />
+    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0" />
     <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.1.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\BusinessServers\SuperSimpleContactList.BusinessServers.csproj" />
     <ProjectReference Include="..\Objects\SuperSimpleContactList.Objects.csproj" />
   </ItemGroup>
+
 </Project>

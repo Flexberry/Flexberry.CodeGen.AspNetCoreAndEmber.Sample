@@ -1,12 +1,12 @@
 {
   "profiles": {
-    "NewPlatform.SuperSimpleContactList": {
+    "NewPlatform.SuperSimpleContactList.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "http://localhost:6600",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "BackendRoot": "http://localhost:5000",
+        "BackendRoot": "http://localhost:6600",
         "DefConnStr": ""
       }
     }

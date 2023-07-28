@@ -1,0 +1,22 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 as webApiBackend
+
+COPY /src/SuperSimpleContactList /SuperSimpleContactList
+
+WORKDIR /SuperSimpleContactList
+
+RUN \
+ dotnet restore SuperSimpleContactList.sln;\
+ dotnet build SuperSimpleContactList.sln -c Release;\
+ dotnet publish WebApi/SuperSimpleContactList.WebApi.csproj -c Release -o out -f net7.0
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+
+WORKDIR /app
+
+COPY --from=webApiBackend /SuperSimpleContactList/out ./
+
+# Check webapi responses
+HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
+  CMD curl -f "http://0.0.0.0/health" || exit
+
+ENTRYPOINT ["dotnet", "SuperSimpleContactList.WebApi.dll"]
