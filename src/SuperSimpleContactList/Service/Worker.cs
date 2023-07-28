@@ -30,14 +30,14 @@ namespace NewPlatform.SuperSimpleContactList
         /// <returns>Асинхронные методы, которые не возвращают значений должны возвращать Task.</returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            string data = LoadExampleDataAsString();
-            string message = "Сервис запущен. Загружены тестовые данные " + data;
-            LogService.LogInfo(message);
-
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Логика фонового сервиса. Будет срабатывать раз в секунду.
-                await Task.Delay(1000, stoppingToken);
+                // Логика фонового сервиса. Будет срабатывать каждые 10 сек.
+                string data = LoadExampleDataAsString();
+                string message = "Сервис запущен. Загружены тестовые данные " + data;
+                LogService.LogInfo(message);
+
+                await Task.Delay(10000, stoppingToken);
             }
         }
 
