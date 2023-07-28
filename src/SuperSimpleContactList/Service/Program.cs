@@ -46,6 +46,7 @@ namespace NewPlatform.SuperSimpleContactList
             .UseUnityServiceProvider(container)
             .ConfigureServices(services =>
             {
+                // Äמבאגכÿול עוסעמגûי סונגטס. ÍÅ ÂÊËÞ×ÅÍÎ Â ÃÅÍÅÐÀÖÈÞ.
                 services.AddHostedService<Worker>();
             })
             .Build();

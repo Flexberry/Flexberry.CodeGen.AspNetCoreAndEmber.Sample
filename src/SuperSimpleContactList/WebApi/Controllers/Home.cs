@@ -7,7 +7,7 @@ namespace NewPlatform.SuperSimpleContactList.WebApi.Controllers
     using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
-    /// Controller example with DataService and User.
+    /// Controller example with DataService and User. NOT INCLUDED IN GENERATION.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -29,7 +29,7 @@ namespace NewPlatform.SuperSimpleContactList.WebApi.Controllers
 
         /// <summary>
         /// GET Request example by url /api/Home.
-        /// This is the example method. NOT INCLUDED IN GENERATION.
+        /// This is the example method.
         /// </summary>
         /// <returns>Contacts names.</returns>
         [HttpGet]
