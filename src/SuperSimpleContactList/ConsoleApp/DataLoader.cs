@@ -7,7 +7,7 @@
     using ICSSoft.STORMNET;
 
     /// <summary>
-    /// Пример класса загрузки данных с DataService и User.
+    /// Пример класса загрузки данных с DataService и User (не входит в генерацию).
     /// </summary>
     public class DataLoader : IDataLoader
     {

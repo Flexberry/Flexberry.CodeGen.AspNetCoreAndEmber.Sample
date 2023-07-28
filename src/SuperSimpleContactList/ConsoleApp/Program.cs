@@ -23,8 +23,11 @@
                 .AddJsonFile("appsettings.json", optional: false);
 
             IConfiguration config = builder.Build();
+
+            // Регистрация контейнера (не входит в генерацию).
             UnityContainer container = ConfigureContainer(config);
 
+            // Запуск контейнера (не входит в генерацию).
             IDataLoader loader = container.Resolve<IDataLoader>();
 
             loader.GetData();
