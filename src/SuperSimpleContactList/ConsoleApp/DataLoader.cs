@@ -7,7 +7,7 @@
     using ICSSoft.STORMNET;
 
     /// <summary>
-    /// Класс загрузки данных с DataService и User.
+    /// Пример класса загрузки данных с DataService и User.
     /// </summary>
     public class DataLoader : IDataLoader
     {
@@ -15,7 +15,7 @@
         private readonly IUser user;
 
         /// <summary>
-        /// Инициализирует экземпляр класса <see cref="DataLoader"/>.
+        /// Пример иинициализации экземпляра класса <see cref="DataLoader"/>.
         /// </summary>
         /// <param name="dataService">DataService.</param>
         /// <param name="user">Current User.</param>
@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Получает данные.
+        /// Пример метода пполучения данных.
         /// </summary>
         /// <returns>Данные.</returns>
         public DataObject[] GetData()

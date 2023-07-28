@@ -3,12 +3,12 @@
     using ICSSoft.STORMNET;
 
     /// <summary>
-    /// Интерфейс для получения данных.
+    /// Пример интерфейса для получения данных.
     /// </summary>
     public interface IDataLoader
     {
         /// <summary>
-        /// Метод возвращает данные.
+        /// Пример метода возвращения данных.
         /// </summary>
         /// <returns>Данные.</returns>
         DataObject[] GetData();

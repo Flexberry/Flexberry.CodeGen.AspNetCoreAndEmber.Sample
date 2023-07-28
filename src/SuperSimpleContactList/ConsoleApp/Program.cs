@@ -8,7 +8,7 @@
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// Основной класс приложения.
+    /// Пример основного класса консольного приложения.
     /// </summary>
     public static class Program
     {
@@ -25,17 +25,13 @@
             IConfiguration config = builder.Build();
             UnityContainer container = ConfigureContainer(config);
 
-            IDataService dataService = container.Resolve<IDataService>();
-            IUser user = container.Resolve<IUser>();
-            DataLoader dataLoader = new DataLoader(dataService, user);
-
             IDataLoader loader = container.Resolve<IDataLoader>();
 
             loader.GetData();
         }
 
         /// <summary>
-        /// Создать и настроить UnityContainer.
+        /// Пример создания и настройки UnityContainer.
         /// </summary>
         /// <param name="configuration">Конфигурация приложения.</param>
         /// <returns>Контейнер.</returns>
@@ -52,7 +48,7 @@
         }
 
         /// <summary>
-        /// Регистрация реализации комопнентов ОРМ.
+        /// Пример регистрации реализации комопнентов ОРМ.
         /// </summary>
         /// <param name="container">Контейнер для регистрации.</param>
         /// <param name="configuration">Конфигурация приложения.</param>
