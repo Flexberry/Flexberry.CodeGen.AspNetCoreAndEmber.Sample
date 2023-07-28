@@ -8,14 +8,14 @@ namespace NewPlatform.SuperSimpleContactList
     using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
-    /// Основной класс приложения.
+    /// РћСЃРЅРѕРІРЅРѕР№ РєР»Р°СЃСЃ РїСЂРёР»РѕР¶РµРЅРёСЏ.
     /// </summary>
     public static class Program
     {
         /// <summary>
-        /// Точка входа в приложение.
+        /// РўРѕС‡РєР° РІС…РѕРґР° РІ РїСЂРёР»РѕР¶РµРЅРёРµ.
         /// </summary>
-        /// <param name="args">Аргументы запуска.</param>
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹ Р·Р°РїСѓСЃРєР°.</param>
         public static void Main(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -30,12 +30,12 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Создать инициализатор приложения.
+        /// РЎРѕР·РґР°С‚СЊ РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ РїСЂРёР»РѕР¶РµРЅРёСЏ.
         /// </summary>
-        /// <param name="args">Аргументы запуска.</param>
-        /// <param name="configuration">Текущая конфигурация приложения.</param>
-        /// <param name="container">Текущий контейнер приложения.</param>
-        /// <returns>Инициализатор приложения.</returns>
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹ Р·Р°РїСѓСЃРєР°.</param>
+        /// <param name="configuration">РўРµРєСѓС‰Р°СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
+        /// <param name="container">РўРµРєСѓС‰РёР№ РєРѕРЅС‚РµР№РЅРµСЂ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
+        /// <returns>РРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ РїСЂРёР»РѕР¶РµРЅРёСЏ.</returns>
         public static IHost CreateHost(string[] args, IConfigurationRoot configuration, UnityContainer container) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(builder =>
@@ -46,16 +46,16 @@ namespace NewPlatform.SuperSimpleContactList
             .UseUnityServiceProvider(container)
             .ConfigureServices(services =>
             {
-                // Добавляем тестовый сервис. НЕ ВКЛЮЧЕНО В ГЕНЕРАЦИЮ.
+                // Р”РѕР±Р°РІР»СЏРµРј С‚РµСЃС‚РѕРІС‹Р№ СЃРµСЂРІРёСЃ. РќР• Р’РљР›Р®Р§Р•РќРћ Р’ Р“Р•РќР•Р РђР¦РР®.
                 services.AddHostedService<Worker>();
             })
             .Build();
 
         /// <summary>
-        /// Создать и настроить UnityContainer.
+        /// РЎРѕР·РґР°С‚СЊ Рё РЅР°СЃС‚СЂРѕРёС‚СЊ UnityContainer.
         /// </summary>
-        /// <param name="configuration">Конфигурация приложения.</param>
-        /// <returns>Контейнер.</returns>
+        /// <param name="configuration">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
+        /// <returns>РљРѕРЅС‚РµР№РЅРµСЂ.</returns>
         private static UnityContainer ConfigureContainer(IConfigurationRoot configuration)
         {
             UnityContainer container = new UnityContainer();
@@ -68,10 +68,10 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Регистрация реализации комопнентов ОРМ.
+        /// Р РµРіРёСЃС‚СЂР°С†РёСЏ СЂРµР°Р»РёР·Р°С†РёРё РєРѕРјРѕРїРЅРµРЅС‚РѕРІ РћР Рњ.
         /// </summary>
-        /// <param name="container">Контейнер для регистрации.</param>
-        /// <param name="configuration">Конфигурация приложения.</param>
+        /// <param name="container">РљРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ СЂРµРіРёСЃС‚СЂР°С†РёРё.</param>
+        /// <param name="configuration">РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
         private static void RegisterORM(IUnityContainer container, IConfigurationRoot configuration)
         {
             string connStr = configuration["DefConnStr"];

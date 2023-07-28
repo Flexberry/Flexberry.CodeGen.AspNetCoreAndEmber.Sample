@@ -5,7 +5,7 @@ namespace NewPlatform.SuperSimpleContactList
     using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
-    /// Пример реализации фонового сервиса с DataService и User. НЕ ВКЛЮЧЕН В ГЕНЕРАЦИЮ.
+    /// РџСЂРёРјРµСЂ СЂРµР°Р»РёР·Р°С†РёРё С„РѕРЅРѕРІРѕРіРѕ СЃРµСЂРІРёСЃР° СЃ DataService Рё User. РќР• Р’РљР›Р®Р§Р•Рќ Р’ Р“Р•РќР•Р РђР¦РР®.
     /// </summary>
     public class Worker : BackgroundService
     {
@@ -24,27 +24,27 @@ namespace NewPlatform.SuperSimpleContactList
         }
 
         /// <summary>
-        /// Асинхронный процесс фонового сервиса.
+        /// РђСЃРёРЅС…СЂРѕРЅРЅС‹Р№ РїСЂРѕС†РµСЃСЃ С„РѕРЅРѕРІРѕРіРѕ СЃРµСЂРІРёСЃР°.
         /// </summary>
-        /// <param name="stoppingToken">Токен, отвечающий за прекращение процесса.</param>
-        /// <returns>Асинхронные методы, которые не возвращают значений должны возвращать Task.</returns>
+        /// <param name="stoppingToken">РўРѕРєРµРЅ, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° РїСЂРµРєСЂР°С‰РµРЅРёРµ РїСЂРѕС†РµСЃСЃР°.</param>
+        /// <returns>РђСЃРёРЅС…СЂРѕРЅРЅС‹Рµ РјРµС‚РѕРґС‹, РєРѕС‚РѕСЂС‹Рµ РЅРµ РІРѕР·РІСЂР°С‰Р°СЋС‚ Р·РЅР°С‡РµРЅРёР№ РґРѕР»Р¶РЅС‹ РІРѕР·РІСЂР°С‰Р°С‚СЊ Task.</returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             string data = LoadExampleDataAsString();
-            string message = "Сервис запущен. Загружены тестовые данные " + data;
+            string message = "РЎРµСЂРІРёСЃ Р·Р°РїСѓС‰РµРЅ. Р—Р°РіСЂСѓР¶РµРЅС‹ С‚РµСЃС‚РѕРІС‹Рµ РґР°РЅРЅС‹Рµ " + data;
             LogService.LogInfo(message);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Логика фонового сервиса. Будет срабатывать раз в секунду.
+                // Р›РѕРіРёРєР° С„РѕРЅРѕРІРѕРіРѕ СЃРµСЂРІРёСЃР°. Р‘СѓРґРµС‚ СЃСЂР°Р±Р°С‚С‹РІР°С‚СЊ СЂР°Р· РІ СЃРµРєСѓРЅРґСѓ.
                 await Task.Delay(1000, stoppingToken);
             }
         }
 
         /// <summary>
-        /// Загрузка данных из БД.
+        /// Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… РёР· Р‘Р”.
         /// </summary>
-        /// <returns>Возвращает список имен объектов Contacts в виде строки.</returns>
+        /// <returns>Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РёРјРµРЅ РѕР±СЉРµРєС‚РѕРІ Contacts РІ РІРёРґРµ СЃС‚СЂРѕРєРё.</returns>
         private string LoadExampleDataAsString()
         {
             try
