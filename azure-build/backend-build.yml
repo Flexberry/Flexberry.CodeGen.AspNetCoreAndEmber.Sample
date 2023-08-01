@@ -10,7 +10,7 @@ trigger:
 
 pool:
   name: FastAgents
-  demands: Agent.Name -equals dotnet-3.1
+  demands: Agent.Name -equals dotnet-7.0
 
 variables:
   BuildConfiguration: 'Debug'
