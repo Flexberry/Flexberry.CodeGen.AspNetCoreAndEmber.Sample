@@ -1,0 +1,10 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 as consoleApp
+
+COPY /src/SuperSimpleContactList /SuperSimpleContactList
+
+WORKDIR /SuperSimpleContactList
+
+RUN \
+ dotnet restore SuperSimpleContactList.sln;\
+ dotnet build SuperSimpleContactList.sln -c Release;\
+ dotnet publish ConsoleApp/SuperSimpleContactList.ConsoleApp.csproj -c Release -o out -f net7.0

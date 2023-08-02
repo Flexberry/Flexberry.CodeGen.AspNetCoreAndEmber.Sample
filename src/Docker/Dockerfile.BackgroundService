@@ -1,0 +1,19 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 as backgroundService
+
+COPY /src/SuperSimpleContactList /SuperSimpleContactList
+
+WORKDIR /SuperSimpleContactList
+
+RUN \
+ dotnet restore SuperSimpleContactList.sln;\
+ dotnet build SuperSimpleContactList.sln -c Release;\
+ dotnet publish Service/SuperSimpleContactList.Service.csproj -c Release -o out -f net7.0
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+
+WORKDIR /app
+
+COPY /src/Docker/BackgroundService/background-service-entrypoint.sh /app
+COPY --from=backgroundService /SuperSimpleContactList/out ./
+
+ENTRYPOINT ["/app/background-service-entrypoint.sh"]

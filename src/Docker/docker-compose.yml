@@ -18,5 +18,14 @@ services:
       - DB:/var/lib/pgsql/data/
     ports:
       - 5432:5432
+      
+  app-web-api:
+    image: supersimplecontactlist/web-api
+    ports:
+      - 8081:80
+      
+  app-background-service:
+    image: supersimplecontactlist/background-service
+
 volumes:
   DB:

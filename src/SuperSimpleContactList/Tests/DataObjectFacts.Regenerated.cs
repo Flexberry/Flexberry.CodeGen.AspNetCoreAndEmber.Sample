@@ -55,7 +55,7 @@ namespace NewPlatform.SuperSimpleContactList
         private partial Dictionary<Type, string[]> GetPropertiesWithoutSetterCheck();
 
         /// <summary>
-        /// Получить классы объектов данных, 
+        /// Получить классы объектов данных,
         /// в которых имеются намеренно некорректные представления.
         /// </summary>
         /// <returns>Список классов с намеренно некорректными представлениями.</returns>

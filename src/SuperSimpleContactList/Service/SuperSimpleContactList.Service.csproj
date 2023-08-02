@@ -1,34 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Configurations>Debug;Release</Configurations>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>NewPlatform.SuperSimpleContactList</RootNamespace>
-    <AssemblyName>SuperSimpleContactList.ODataBackend</AssemblyName>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-SuperSimpleContactList.Service-c8f7ad44-cc2e-45c1-bedd-2c17973f8613</UserSecretsId>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.4" />
-    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
     <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0" />
     <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.1.1" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="7.1.1" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.1.1" />
-    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\BusinessServers\SuperSimpleContactList.BusinessServers.csproj" />
     <ProjectReference Include="..\Objects\SuperSimpleContactList.Objects.csproj" />
